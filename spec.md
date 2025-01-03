@@ -13982,8 +13982,9 @@
 ## Built-in Exotic Object Internal Methods and Slots
     <p>This specification defines several kinds of built-in exotic objects. These objects generally behave similar to ordinary objects except for a few specific situations. The following exotic objects use the ordinary object internal methods except where it is explicitly specified otherwise below:</p>
 
-    <emu-clause id="sec-bound-function-exotic-objects">
-      <h1>Bound Function Exotic Objects</h1>
+<emu-clause id="sec-bound-function-exotic-objects">
+
+### Bound Function Exotic Objects
       <p>A bound function exotic object is an exotic object that wraps another function object. A bound function exotic object is callable (it has a [[Call]] internal method and may have a [[Construct]] internal method). Calling a bound function exotic object generally results in a call of its wrapped function.</p>
 
       <p>An object is a <dfn id="bound-function-exotic-object" variants="bound function exotic objects">bound function exotic object</dfn> if its [[Call]] and (if applicable) [[Construct]] internal methods use the following implementations, and its other essential internal methods use the definitions found in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>. These methods are installed in BoundFunctionCreate.</p>
@@ -14109,8 +14110,9 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-array-exotic-objects">
-      <h1>Array Exotic Objects</h1>
+<emu-clause id="sec-array-exotic-objects">
+
+### Array Exotic Objects
       <p>An Array is an exotic object that gives special treatment to array index property keys (see <emu-xref href="#sec-object-type"></emu-xref>). A property whose property name is an array index is also called an <em>element</em>. Every Array has a non-configurable *"length"* property whose value is always a non-negative integral Number whose mathematical value is strictly less than 2<sup>32</sup>. The value of the *"length"* property is numerically greater than the name of every own property whose name is an array index; whenever an own property of an Array is created or changed, other properties are adjusted as necessary to maintain this invariant. Specifically, whenever an own property is added whose name is an array index, the value of the *"length"* property is changed, if necessary, to be one more than the numeric value of that array index; and whenever the value of the *"length"* property is changed, every own property whose name is an array index whose value is not smaller than the new length is deleted. This constraint applies only to own properties of an Array and is unaffected by *"length"* or array index properties that may be inherited from its prototypes.</p>
 
       <p>An object is an <dfn id="array-exotic-object" variants="Array exotic objects">Array exotic object</dfn> (or simply, an Array) if its [[DefineOwnProperty]] internal method uses the following implementation, and its other essential internal methods use the definitions found in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>. These methods are installed in ArrayCreate.</p>
@@ -14252,8 +14254,9 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-string-exotic-objects">
-      <h1>String Exotic Objects</h1>
+<emu-clause id="sec-string-exotic-objects">
+
+### String Exotic Objects
       <p>A String object is an exotic object that encapsulates a String value and exposes virtual integer-indexed data properties corresponding to the individual code unit elements of the String value. String exotic objects always have a data property named *"length"* whose value is the length of the encapsulated String value. Both the code unit data properties and the *"length"* property are non-writable and non-configurable.</p>
 
       <p>An object is a <dfn id="string-exotic-object" variants="String exotic objects">String exotic object</dfn> (or simply, a String object) if its [[GetOwnProperty]], [[DefineOwnProperty]], and [[OwnPropertyKeys]] internal methods use the following implementations, and its other essential internal methods use the definitions found in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>. These methods are installed in StringCreate.</p>
@@ -14369,8 +14372,9 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-arguments-exotic-objects">
-      <h1>Arguments Exotic Objects</h1>
+<emu-clause id="sec-arguments-exotic-objects">
+
+### Arguments Exotic Objects
 
       <p>Most ECMAScript functions make an arguments object available to their code. Depending upon the characteristics of the function definition, its arguments object is either an ordinary object or an arguments exotic object. An arguments exotic object is an exotic object whose array index properties map to the formal parameters bindings of an invocation of its associated ECMAScript function.</p>
 
@@ -14630,8 +14634,9 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-typedarray-exotic-objects" oldids="sec-integer-indexed-exotic-objects">
-      <h1>TypedArray Exotic Objects</h1>
+<emu-clause id="sec-typedarray-exotic-objects" oldids="sec-integer-indexed-exotic-objects">
+
+### TypedArray Exotic Objects
       <p>A TypedArray is an exotic object that performs special handling of integer index property keys.</p>
       <p>TypedArrays have the same internal slots as ordinary objects and additionally [[ViewedArrayBuffer]], [[ArrayLength]], [[ByteOffset]], [[ContentType]], and [[TypedArrayName]] internal slots.</p>
       <p>An object is a <dfn id="typedarray" oldids="integer-indexed-exotic-object" variants="TypedArrays">TypedArray</dfn> if its [[PreventExtensions]], [[GetOwnProperty]], [[HasProperty]], [[DefineOwnProperty]], [[Get]], [[Set]], [[Delete]], and [[OwnPropertyKeys]], internal methods use the definitions in this section, and its other essential internal methods use the definitions found in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>. These methods are installed by TypedArrayCreate.</p>
@@ -15058,8 +15063,9 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-module-namespace-exotic-objects">
-      <h1>Module Namespace Exotic Objects</h1>
+<emu-clause id="sec-module-namespace-exotic-objects">
+
+### Module Namespace Exotic Objects
       <p>A module namespace exotic object is an exotic object that exposes the bindings exported from an ECMAScript |Module| (See <emu-xref href="#sec-exports"></emu-xref>). There is a one-to-one correspondence between the String-keyed own properties of a module namespace exotic object and the binding names exported by the |Module|. The exported bindings include any bindings that are indirectly exported using `export *` export items. Each String-valued own property key is the StringValue of the corresponding exported binding name. These are the only String-keyed properties of a module namespace exotic object. Each such property has the attributes { [[Writable]]: *true*, [[Enumerable]]: *true*, [[Configurable]]: *false* }. Module namespace exotic objects are not extensible.</p>
       <p>An object is a <dfn id="module-namespace-exotic-object" variants="module namespace exotic objects">module namespace exotic object</dfn> if its [[GetPrototypeOf]], [[SetPrototypeOf]], [[IsExtensible]], [[PreventExtensions]], [[GetOwnProperty]], [[DefineOwnProperty]], [[HasProperty]], [[Get]], [[Set]], [[Delete]], and [[OwnPropertyKeys]] internal methods use the definitions in this section, and its other essential internal methods use the definitions found in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>. These methods are installed by ModuleNamespaceCreate.</p>
       <p>Module namespace exotic objects have the internal slots defined in <emu-xref href="#table-internal-slots-of-module-namespace-exotic-objects"></emu-xref>.</p>
@@ -15319,8 +15325,9 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-immutable-prototype-exotic-objects">
-      <h1>Immutable Prototype Exotic Objects</h1>
+<emu-clause id="sec-immutable-prototype-exotic-objects">
+
+### Immutable Prototype Exotic Objects
       <p>An immutable prototype exotic object is an exotic object that has a [[Prototype]] internal slot that will not change once it is initialized.</p>
 
       <p>An object is an <dfn id="immutable-prototype-exotic-object" variants="immutable prototype exotic objects">immutable prototype exotic object</dfn> if its [[SetPrototypeOf]] internal method uses the following implementation. (Its other essential internal methods may use any implementation, depending on the specific immutable prototype exotic object in question.)</p>
