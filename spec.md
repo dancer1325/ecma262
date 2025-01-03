@@ -12539,8 +12539,11 @@
 
 # Ordinary and Exotic Objects Behaviours
 
-  <emu-clause id="sec-ordinary-object-internal-methods-and-internal-slots">
-    <h1>Ordinary Object Internal Methods and Internal Slots</h1>
+<emu-clause id="sec-ordinary-object-internal-methods-and-internal-slots">
+
+## Ordinary Object Internal Methods and Internal Slots
+
+* TODO:
     <p>All ordinary objects have an internal slot called [[Prototype]]. The value of this internal slot is either *null* or an object and is used for implementing inheritance. Assume a property named _P_ is missing from an ordinary object _O_ but exists on its [[Prototype]] object. If _P_ refers to a data property on the [[Prototype]] object, _O_ inherits it for get access, making it behave as if _P_ was a property of _O_. If _P_ refers to a writable data property on the [[Prototype]] object, set access of _P_ on _O_ creates a new data property named _P_ on _O_. If _P_ refers to a non-writable data property on the [[Prototype]] object, set access of _P_ on _O_ fails. If _P_ refers to an accessor property on the [[Prototype]] object, the accessor is inherited by _O_ for both get access and set access.</p>
     <p>Every ordinary object has a Boolean-valued [[Extensible]] internal slot which is used to fulfill the extensibility-related internal method invariants specified in <emu-xref href="#sec-invariants-of-the-essential-internal-methods"></emu-xref>. Namely, once the value of an object's [[Extensible]] internal slot has been set to *false*, it is no longer possible to add properties to the object, to modify the value of the object's [[Prototype]] internal slot, or to subsequently change the value of [[Extensible]] to *true*.</p>
     <p>In the following algorithm descriptions, assume _O_ is an ordinary object, _P_ is a property key value, _V_ is any ECMAScript language value, and _Desc_ is a Property Descriptor record.</p>
@@ -13112,8 +13115,10 @@
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-ecmascript-function-objects">
-    <h1>ECMAScript Function Objects</h1>
+<emu-clause id="sec-ecmascript-function-objects">
+
+## ECMAScript Function Objects
+* TODO:
     <p>ECMAScript function objects encapsulate parameterized ECMAScript code closed over a lexical environment and support the dynamic evaluation of that code. An ECMAScript function object is an ordinary object and has the same internal slots and the same internal methods as other ordinary objects. The code of an ECMAScript function object may be either strict mode code (<emu-xref href="#sec-strict-mode-code"></emu-xref>) or non-strict code. An ECMAScript function object whose code is strict mode code is called a <dfn id="strict-function" variants="strict functions">strict function</dfn>. One whose code is not strict mode code is called a <dfn id="non-strict-function" variants="non-strict functions">non-strict function</dfn>.</p>
     <p>In addition to [[Extensible]] and [[Prototype]], ECMAScript function objects also have the internal slots listed in <emu-xref href="#table-internal-slots-of-ecmascript-function-objects"></emu-xref>.</p>
     <emu-table id="table-internal-slots-of-ecmascript-function-objects" caption="Internal Slots of ECMAScript Function Objects" oldids="table-27">
@@ -13856,8 +13861,9 @@
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-built-in-function-objects">
-    <h1>Built-in Function Objects</h1>
+<emu-clause id="sec-built-in-function-objects">
+
+## Built-in Function Objects
     <p>A built-in function object is an ordinary object; it must satisfy the requirements for ordinary objects set out in <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>.</p>
     <p>In addition to the internal slots required of every ordinary object (see <emu-xref href="#sec-ordinary-object-internal-methods-and-internal-slots"></emu-xref>), a built-in function object must also have the following internal slots:</p>
     <ul>
@@ -13971,8 +13977,9 @@
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-built-in-exotic-object-internal-methods-and-slots">
-    <h1>Built-in Exotic Object Internal Methods and Slots</h1>
+<emu-clause id="sec-built-in-exotic-object-internal-methods-and-slots">
+
+## Built-in Exotic Object Internal Methods and Slots
     <p>This specification defines several kinds of built-in exotic objects. These objects generally behave similar to ordinary objects except for a few specific situations. The following exotic objects use the ordinary object internal methods except where it is explicitly specified otherwise below:</p>
 
     <emu-clause id="sec-bound-function-exotic-objects">
@@ -15355,8 +15362,9 @@
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-proxy-object-internal-methods-and-internal-slots">
-    <h1>Proxy Object Internal Methods and Internal Slots</h1>
+<emu-clause id="sec-proxy-object-internal-methods-and-internal-slots">
+
+## Proxy Object Internal Methods and Internal Slots
     <p>A Proxy object is an exotic object whose essential internal methods are partially implemented using ECMAScript code. Every Proxy object has an internal slot called [[ProxyHandler]]. The value of [[ProxyHandler]] is an object, called the proxy's <em>handler object</em>, or *null*. Methods (see <emu-xref href="#table-proxy-handler-methods"></emu-xref>) of a handler object may be used to augment the implementation for one or more of the Proxy object's internal methods. Every Proxy object also has an internal slot called [[ProxyTarget]] whose value is either an object or the *null* value. This object is called the proxy's <em>target object</em>.</p>
 
     <p>An object is a <dfn id="proxy-exotic-object" variants="Proxy exotic objects">Proxy exotic object</dfn> if its essential internal methods (including [[Call]] and [[Construct]], if applicable) use the definitions in this section. These internal methods are installed in ProxyCreate.</p>
