@@ -25880,8 +25880,10 @@
 
 # ECMAScript Language: Scripts and Modules
 
-  <emu-clause id="sec-scripts">
-    <h1>Scripts</h1>
+<h1 id="sec-scripts"></h1>
+
+## Scripts
+* TODO:
     <h2>Syntax</h2>
     <emu-grammar type="definition">
       Script :
@@ -26143,12 +26145,12 @@
         <p>Unlike explicit var or function declarations, properties that are directly created on the global object result in global bindings that may be shadowed by let/const/class declarations.</p>
       </emu-note>
     </emu-clause>
-  </emu-clause>
 
-  <emu-clause id="sec-modules">
-    <h1>Modules</h1>
-    <h2>Syntax</h2>
-    <emu-grammar type="definition">
+<h2 id="sec-modules"></h2>
+
+## Modules
+* Syntax
+    ```
       Module :
         ModuleBody?
 
@@ -26167,11 +26169,11 @@
       ModuleExportName :
         IdentifierName
         StringLiteral
-    </emu-grammar>
+    ```
 
-    <emu-clause id="sec-module-semantics">
-      <h1>Module Semantics</h1>
-
+<h3 id="sec-module-semantics"></h3>
+### Module Semantics
+* TODO:
       <emu-clause id="sec-module-semantics-static-semantics-early-errors">
         <h1>Static Semantics: Early Errors</h1>
         <emu-grammar>ModuleBody : ModuleItemList</emu-grammar>
@@ -28457,10 +28459,12 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-imports">
-      <h1>Imports</h1>
-      <h2>Syntax</h2>
-      <emu-grammar type="definition">
+<h3 id="sec-imports"></h3>
+
+### Imports
+* Syntax
+
+  ```
         ImportDeclaration :
           `import` ImportClause FromClause `;`
           `import` ModuleSpecifier `;`
@@ -28499,8 +28503,9 @@
 
         ImportedBinding :
           BindingIdentifier[~Yield, +Await]
-      </emu-grammar>
+  ```
 
+* TODO:
       <emu-clause id="sec-imports-static-semantics-early-errors">
         <h1>Static Semantics: Early Errors</h1>
         <emu-grammar>ModuleItem : ImportDeclaration</emu-grammar>
@@ -28602,10 +28607,13 @@
       </emu-clause>
     </emu-clause>
 
-    <emu-clause id="sec-exports">
-      <h1>Exports</h1>
-      <h2>Syntax</h2>
-      <emu-grammar type="definition">
+<h3 id="sec-exports"></h3>
+
+### Exports
+
+* Syntax
+
+  ```
         ExportDeclaration :
           `export` ExportFromClause FromClause `;`
           `export` NamedExports `;`
@@ -28632,8 +28640,8 @@
         ExportSpecifier :
           ModuleExportName
           ModuleExportName `as` ModuleExportName
-      </emu-grammar>
-
+  ```
+* TODO:
       <emu-clause id="sec-exports-static-semantics-early-errors">
         <h1>Static Semantics: Early Errors</h1>
         <emu-grammar>ExportDeclaration : `export` NamedExports `;`</emu-grammar>
@@ -28992,7 +29000,6 @@
         </emu-alg>
       </emu-clause>
     </emu-clause>
-  </emu-clause>
 
 <h1 id="sec-error-handling-and-language-extensions"></h1>
 
@@ -49533,8 +49540,10 @@ THH:mm:ss.sss
 
 # Reflection
 
-  <emu-clause id="sec-reflect-object">
-    <h1>The Reflect Object</h1>
+<h2 id="sec-reflect-object"></h2>
+
+## The Reflect Object
+* TODO:
     <p>The Reflect object:</p>
     <ul>
       <li>is <dfn>%Reflect%</dfn>.</li>
@@ -49687,11 +49696,12 @@ THH:mm:ss.sss
       <p>The initial value of the %Symbol.toStringTag% property is the String value *"Reflect"*.</p>
       <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
     </emu-clause>
-  </emu-clause>
 
-  <emu-clause id="sec-proxy-objects">
-    <h1>Proxy Objects</h1>
+<h2 id="sec-proxy-objects"></h2>
 
+## Proxy Objects
+
+* TODO:
     <emu-clause id="sec-proxy-constructor">
       <h1>The Proxy Constructor</h1>
       <p>The Proxy constructor:</p>
@@ -49745,19 +49755,30 @@ THH:mm:ss.sss
         </emu-alg>
       </emu-clause>
     </emu-clause>
-  </emu-clause>
 
-  <emu-clause id="sec-module-namespace-objects">
-    <h1>Module Namespace Objects</h1>
-    <p>A Module Namespace Object is a module namespace exotic object that provides runtime property-based access to a module's exported bindings. There is no constructor function for Module Namespace Objects. Instead, such an object is created for each module that is imported by an |ImportDeclaration| that contains a |NameSpaceImport|.</p>
-    <p>In addition to the properties specified in <emu-xref href="#sec-module-namespace-exotic-objects"></emu-xref> each Module Namespace Object has the following own property:</p>
+<h2 id="sec-module-namespace-objects"></h2>
 
-    <emu-clause oldids="sec-@@tostringtag" id="sec-%symbol.tostringtag%">
-      <h1>%Symbol.toStringTag%</h1>
-      <p>The initial value of the %Symbol.toStringTag% property is the String value *"Module"*.</p>
-      <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.</p>
-    </emu-clause>
-  </emu-clause>
+## Module Namespace Objects
+
+* Module Namespace Object
+  * == module namespace exotic object /
+    * provides
+      * runtime property-based access -- to a -- module's exported bindings
+  * way to create it
+    * ❌NO exist constructor function ❌
+    * created / EACH module / -- imported by an -- `ImportDeclaration` / contains a `NameSpaceImport`
+  * properties
+    * module namespace exotic object's properties
+    * `%Symbol.toStringTag%`
+      * initial value = `"Module"`
+      * attributes
+        ```
+        {
+          [[Writable]]: *false*,
+          [[Enumerable]]: *false*,
+          [[Configurable]]: *false*
+        }
+        ```
 
 <h1 id="sec-memory-model"></h1>
 
