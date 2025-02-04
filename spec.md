@@ -46425,8 +46425,9 @@ THH:mm:ss.sss
 
 # Control Abstraction Objects
 
-  <emu-clause id="sec-iteration">
-    <h1>Iteration</h1>
+<emu-clause id="sec-iteration">
+
+## Iteration
 
     <emu-clause id="sec-common-iteration-interfaces">
       <h1>Common Iteration Interfaces</h1>
@@ -47316,8 +47317,9 @@ THH:mm:ss.sss
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-promise-objects">
-    <h1>Promise Objects</h1>
+<emu-clause id="sec-promise-objects">
+
+## Promise Objects
     <p>A Promise is an object that is used as a placeholder for the eventual results of a deferred (and possibly asynchronous) computation.</p>
     <p>Any Promise is in one of three mutually exclusive states: <em>fulfilled</em>, <em>rejected</em>, and <em>pending</em>:</p>
     <ul>
@@ -48448,8 +48450,9 @@ THH:mm:ss.sss
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-generatorfunction-objects">
-    <h1>GeneratorFunction Objects</h1>
+<emu-clause id="sec-generatorfunction-objects">
+
+## GeneratorFunction Objects
     <p>GeneratorFunctions are functions that are usually created by evaluating |GeneratorDeclaration|s, |GeneratorExpression|s, and |GeneratorMethod|s. They may also be created by calling the %GeneratorFunction% intrinsic.</p>
     <emu-figure id="figure-2" caption="Generator Objects Relationships" informative>
       <img alt="A staggering variety of boxes and arrows." height="700" src="img/figure-2.svg" width="900">
@@ -48553,8 +48556,9 @@ THH:mm:ss.sss
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-asyncgeneratorfunction-objects">
-    <h1>AsyncGeneratorFunction Objects</h1>
+<emu-clause id="sec-asyncgeneratorfunction-objects">
+
+## AsyncGeneratorFunction Objects
     <p>AsyncGeneratorFunctions are functions that are usually created by evaluating |AsyncGeneratorDeclaration|, |AsyncGeneratorExpression|, and |AsyncGeneratorMethod| syntactic productions. They may also be created by calling the %AsyncGeneratorFunction% intrinsic.</p>
 
     <emu-clause id="sec-asyncgeneratorfunction-constructor">
@@ -48656,8 +48660,9 @@ THH:mm:ss.sss
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-generator-objects">
-    <h1>Generator Objects</h1>
+<emu-clause id="sec-generator-objects">
+
+## Generator Objects
     <p>A Generator is created by calling a generator function and conforms to both the iterator interface and the iterable interface.</p>
     <p>Generator instances directly inherit properties from the initial value of the *"prototype"* property of the generator function that created the instance. Generator instances indirectly inherit properties from %GeneratorPrototype%.</p>
 
@@ -48971,8 +48976,9 @@ THH:mm:ss.sss
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-asyncgenerator-objects">
-    <h1>AsyncGenerator Objects</h1>
+<emu-clause id="sec-asyncgenerator-objects">
+
+## AsyncGenerator Objects
     <p>An AsyncGenerator is created by calling an async generator function and conforms to both the async iterator interface and the async iterable interface.</p>
 
     <p>AsyncGenerator instances directly inherit properties from the initial value of the *"prototype"* property of the async generator function that created the instance. AsyncGenerator instances indirectly inherit properties from %AsyncGeneratorPrototype%.</p>
@@ -49418,8 +49424,9 @@ THH:mm:ss.sss
     </emu-clause>
   </emu-clause>
 
-  <emu-clause id="sec-async-function-objects">
-    <h1>AsyncFunction Objects</h1>
+<emu-clause id="sec-async-function-objects">
+
+## AsyncFunction Objects
     <p>AsyncFunctions are functions that are usually created by evaluating |AsyncFunctionDeclaration|s, |AsyncFunctionExpression|s, |AsyncMethod|s, and |AsyncArrowFunction|s. They may also be created by calling the %AsyncFunction% intrinsic.</p>
 
     <emu-clause id="sec-async-function-constructor">
