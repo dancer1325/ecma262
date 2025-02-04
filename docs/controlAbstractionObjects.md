@@ -1348,17 +1348,23 @@
 <emu-clause id="sec-promise-constructor">
 
 ### The Promise Constructor
-                  <p>The Promise constructor:</p>
-                  <ul>
-                    <li>is <dfn>%Promise%</dfn>.</li>
-                    <li>is the initial value of the *"Promise"* property of the global object.</li>
-                    <li>creates and initializes a new Promise when called as a constructor.</li>
-                    <li>is not intended to be called as a function and will throw an exception when called in that manner.</li>
-                    <li>may be used as the value in an `extends` clause of a class definition. Subclass constructors that intend to inherit the specified Promise behaviour must include a `super` call to the Promise constructor to create and initialize the subclass instance with the internal state necessary to support the `Promise` and `Promise.prototype` built-in methods.</li>
-                  </ul>
+* == `%Promise%`
+  * built-in Promise constructor | specific internal notation
+* 👀== global object's `.Promise`'s initial value 👀
+* allows
+  * creating and initialize a NEW Promise
+* uses
+  * ⚠️NOT call -- as a -- function ⚠️
+    * otherwise, throw an exception
+  * `class PromiseClassToExtend extends Promise {}`
+    * subclass constructors / intend to inherit the Promise behaviour -> MUST include a `super` call -- to the -- Promise constructor
+      * Reason: 🧠create and initialize the subclass instance / 's internal state -- support the -- `Promise` and `Promise.prototype` built-in methods 🧠
 
-                  <emu-clause id="sec-promise-executor">
-                    <h1>Promise ( _executor_ )</h1>
+
+<emu-clause id="sec-promise-executor">
+
+#### Promise ( _executor_ )
+* TODO:
                     <p>This function performs the following steps when called:</p>
                     <emu-alg>
                       1. If NewTarget is *undefined*, throw a *TypeError* exception.
