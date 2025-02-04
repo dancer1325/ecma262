@@ -900,1135 +900,1147 @@
   * := object /
     * uses
       * eventual results of a deferred (and possibly asynchronous) computation's placeholder
-    * ALLOWED EXCLUSIVE states
-      * <em>fulfilled</em>, <em>rejected</em>, and <em>pending</em>:</p>
-        <ul>
-        <li>
-        A promise `p` is fulfilled if `p.then(f, r)` will immediately enqueue a Job to call the function `f`.
-        </li>
-        <li>
-        A promise `p` is rejected if `p.then(f, r)` will immediately enqueue a Job to call the function `r`.
-        </li>
-        <li>
-        A promise is pending if it is neither fulfilled nor rejected.
-        </li>
-        </ul>
-        <p>A promise is said to be <em>settled</em> if it is not pending, i.e. if it is either fulfilled or rejected.</p>
-        <p>A promise is <em>resolved</em> if it is settled or if it has been “locked in” to match the state of another promise. Attempting to resolve or reject a resolved promise has no effect. A promise is <em>unresolved</em> if it is not resolved. An unresolved promise is always in the pending state. A resolved promise may be pending, fulfilled or rejected.</p>
+    * 👀ALLOWED EXCLUSIVE states 👀
+      * fulfilled
+        * if `p.then(f, r)` -- will IMMEDIATELY enqueue a -- Job / -- call the -- function `f`
+      * rejected
+        * if `p.then(f, r)` -- will IMMEDIATELY enqueue a -- Job / -- call the -- function `r`
+      * pending
+        * neither fulfilled nor rejected
+  * it's said
+    * settled
+      * != pending == fulfilled or rejected
+    * resolved
+      * == settled OR “locked in” -- to match -- another promise's state
+        * -> may be
+          * pending,
+          * fulfilled or
+          * rejected
+      * if you try to resolve or reject a resolved promise -> NO effect
+    * unresolved
+      * == NOT resolved
+      * ALWAYS | PENDING state
 
-            <emu-clause id="sec-promise-abstract-operations">
-              <h1>Promise Abstract Operations</h1>
+<emu-clause id="sec-promise-abstract-operations">
 
-              <emu-clause id="sec-promisecapability-records">
-                <h1>PromiseCapability Records</h1>
-                <p>A <dfn variants="PromiseCapability Records">PromiseCapability Record</dfn> is a Record value used to encapsulate a Promise or promise-like object along with the functions that are capable of resolving or rejecting that promise. PromiseCapability Records are produced by the NewPromiseCapability abstract operation.</p>
-                <p>PromiseCapability Records have the fields listed in <emu-xref href="#table-promisecapability-record-fields"></emu-xref>.</p>
-                <emu-table id="table-promisecapability-record-fields" caption="PromiseCapability Record Fields" oldids="table-57">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>
-                          Field Name
-                        </th>
-                        <th>
-                          Value
-                        </th>
-                        <th>
-                          Meaning
-                        </th>
-                      </tr>
-                    </thead>
-                    <tr>
-                      <td>
-                        [[Promise]]
-                      </td>
-                      <td>
-                        an Object
-                      </td>
-                      <td>
-                        An object that is usable as a promise.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        [[Resolve]]
-                      </td>
-                      <td>
-                        a function object
-                      </td>
-                      <td>
-                        The function that is used to resolve the given promise.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        [[Reject]]
-                      </td>
-                      <td>
-                        a function object
-                      </td>
-                      <td>
-                        The function that is used to reject the given promise.
-                      </td>
-                    </tr>
-                  </table>
-                </emu-table>
+### Promise Abstract Operations
 
-                <emu-clause id="sec-ifabruptrejectpromise" aoid="IfAbruptRejectPromise">
-                  <h1>IfAbruptRejectPromise ( _value_, _capability_ )</h1>
-                  <p>IfAbruptRejectPromise is a shorthand for a sequence of algorithm steps that use a PromiseCapability Record. An algorithm step of the form:</p>
-                  <emu-alg>
-                    1. IfAbruptRejectPromise(_value_, _capability_).
-                  </emu-alg>
-                  <p>means the same thing as:</p>
-                  <emu-alg>
-                    1. Assert: _value_ is a Completion Record.
-                    1. If _value_ is an abrupt completion, then
-                      1. Perform ? Call(_capability_.[[Reject]], *undefined*, « _value_.[[Value]] »).
-                      1. Return _capability_.[[Promise]].
-                    1. Else,
-                      1. Set _value_ to ! _value_.
-                  </emu-alg>
+* TODO:
+                  <emu-clause id="sec-promisecapability-records">
+                    <h1>PromiseCapability Records</h1>
+                    <p>A <dfn variants="PromiseCapability Records">PromiseCapability Record</dfn> is a Record value used to encapsulate a Promise or promise-like object along with the functions that are capable of resolving or rejecting that promise. PromiseCapability Records are produced by the NewPromiseCapability abstract operation.</p>
+                    <p>PromiseCapability Records have the fields listed in <emu-xref href="#table-promisecapability-record-fields"></emu-xref>.</p>
+                    <emu-table id="table-promisecapability-record-fields" caption="PromiseCapability Record Fields" oldids="table-57">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>
+                              Field Name
+                            </th>
+                            <th>
+                              Value
+                            </th>
+                            <th>
+                              Meaning
+                            </th>
+                          </tr>
+                        </thead>
+                        <tr>
+                          <td>
+                            [[Promise]]
+                          </td>
+                          <td>
+                            an Object
+                          </td>
+                          <td>
+                            An object that is usable as a promise.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            [[Resolve]]
+                          </td>
+                          <td>
+                            a function object
+                          </td>
+                          <td>
+                            The function that is used to resolve the given promise.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            [[Reject]]
+                          </td>
+                          <td>
+                            a function object
+                          </td>
+                          <td>
+                            The function that is used to reject the given promise.
+                          </td>
+                        </tr>
+                      </table>
+                    </emu-table>
+
+                    <emu-clause id="sec-ifabruptrejectpromise" aoid="IfAbruptRejectPromise">
+                      <h1>IfAbruptRejectPromise ( _value_, _capability_ )</h1>
+                      <p>IfAbruptRejectPromise is a shorthand for a sequence of algorithm steps that use a PromiseCapability Record. An algorithm step of the form:</p>
+                      <emu-alg>
+                        1. IfAbruptRejectPromise(_value_, _capability_).
+                      </emu-alg>
+                      <p>means the same thing as:</p>
+                      <emu-alg>
+                        1. Assert: _value_ is a Completion Record.
+                        1. If _value_ is an abrupt completion, then
+                          1. Perform ? Call(_capability_.[[Reject]], *undefined*, « _value_.[[Value]] »).
+                          1. Return _capability_.[[Promise]].
+                        1. Else,
+                          1. Set _value_ to ! _value_.
+                      </emu-alg>
+                    </emu-clause>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promisereaction-records">
+                    <h1>PromiseReaction Records</h1>
+                    <p>A <dfn variants="PromiseReaction Records">PromiseReaction Record</dfn> is a Record value used to store information about how a promise should react when it becomes resolved or rejected with a given value. PromiseReaction Records are created by the PerformPromiseThen abstract operation, and are used by the Abstract Closure returned by NewPromiseReactionJob.</p>
+                    <p>PromiseReaction Records have the fields listed in <emu-xref href="#table-promisereaction-record-fields"></emu-xref>.</p>
+                    <emu-table id="table-promisereaction-record-fields" caption="PromiseReaction Record Fields" oldids="table-58">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>
+                              Field Name
+                            </th>
+                            <th>
+                              Value
+                            </th>
+                            <th>
+                              Meaning
+                            </th>
+                          </tr>
+                        </thead>
+                        <tr>
+                          <td>
+                            [[Capability]]
+                          </td>
+                          <td>
+                            a PromiseCapability Record or *undefined*
+                          </td>
+                          <td>
+                            The capabilities of the promise for which this record provides a reaction handler.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            [[Type]]
+                          </td>
+                          <td>
+                            ~fulfill~ or ~reject~
+                          </td>
+                          <td>
+                            The [[Type]] is used when [[Handler]] is ~empty~ to allow for behaviour specific to the settlement type.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            [[Handler]]
+                          </td>
+                          <td>
+                            a JobCallback Record or ~empty~
+                          </td>
+                          <td>
+                            The function that should be applied to the incoming value, and whose return value will govern what happens to the derived promise. If [[Handler]] is ~empty~, a function that depends on the value of [[Type]] will be used instead.
+                          </td>
+                        </tr>
+                      </table>
+                    </emu-table>
+                  </emu-clause>
+
+                  <emu-clause id="sec-createresolvingfunctions" type="abstract operation">
+                    <h1>
+                      CreateResolvingFunctions (
+                        _promise_: a Promise,
+                      ): a Record with fields [[Resolve]] (a function object) and [[Reject]] (a function object)
+                    </h1>
+                    <dl class="header">
+                    </dl>
+                    <emu-alg>
+                      1. Let _alreadyResolved_ be the Record { [[Value]]: *false* }.
+                      1. Let _stepsResolve_ be the algorithm steps defined in <emu-xref href="#sec-promise-resolve-functions" title></emu-xref>.
+                      1. Let _lengthResolve_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise-resolve-functions" title></emu-xref>.
+                      1. Let _resolve_ be CreateBuiltinFunction(_stepsResolve_, _lengthResolve_, *""*, « [[Promise]], [[AlreadyResolved]] »).
+                      1. Set _resolve_.[[Promise]] to _promise_.
+                      1. Set _resolve_.[[AlreadyResolved]] to _alreadyResolved_.
+                      1. Let _stepsReject_ be the algorithm steps defined in <emu-xref href="#sec-promise-reject-functions" title></emu-xref>.
+                      1. Let _lengthReject_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise-reject-functions" title></emu-xref>.
+                      1. Let _reject_ be CreateBuiltinFunction(_stepsReject_, _lengthReject_, *""*, « [[Promise]], [[AlreadyResolved]] »).
+                      1. Set _reject_.[[Promise]] to _promise_.
+                      1. Set _reject_.[[AlreadyResolved]] to _alreadyResolved_.
+                      1. Return the Record { [[Resolve]]: _resolve_, [[Reject]]: _reject_ }.
+                    </emu-alg>
+
+                    <emu-clause id="sec-promise-reject-functions">
+                      <h1>Promise Reject Functions</h1>
+                      <p>A promise reject function is an anonymous built-in function that has [[Promise]] and [[AlreadyResolved]] internal slots.</p>
+                      <p>When a promise reject function is called with argument _reason_, the following steps are taken:</p>
+                      <emu-alg>
+                        1. Let _F_ be the active function object.
+                        1. Assert: _F_ has a [[Promise]] internal slot whose value is an Object.
+                        1. Let _promise_ be _F_.[[Promise]].
+                        1. Let _alreadyResolved_ be _F_.[[AlreadyResolved]].
+                        1. If _alreadyResolved_.[[Value]] is *true*, return *undefined*.
+                        1. Set _alreadyResolved_.[[Value]] to *true*.
+                        1. Perform RejectPromise(_promise_, _reason_).
+                        1. Return *undefined*.
+                      </emu-alg>
+                      <p>The *"length"* property of a promise reject function is *1*<sub>𝔽</sub>.</p>
+                    </emu-clause>
+
+                    <emu-clause id="sec-promise-resolve-functions">
+                      <h1>Promise Resolve Functions</h1>
+                      <p>A promise resolve function is an anonymous built-in function that has [[Promise]] and [[AlreadyResolved]] internal slots.</p>
+                      <p>When a promise resolve function is called with argument _resolution_, the following steps are taken:</p>
+                      <emu-alg>
+                        1. Let _F_ be the active function object.
+                        1. Assert: _F_ has a [[Promise]] internal slot whose value is an Object.
+                        1. Let _promise_ be _F_.[[Promise]].
+                        1. Let _alreadyResolved_ be _F_.[[AlreadyResolved]].
+                        1. If _alreadyResolved_.[[Value]] is *true*, return *undefined*.
+                        1. Set _alreadyResolved_.[[Value]] to *true*.
+                        1. If SameValue(_resolution_, _promise_) is *true*, then
+                          1. Let _selfResolutionError_ be a newly created *TypeError* object.
+                          1. Perform RejectPromise(_promise_, _selfResolutionError_).
+                          1. Return *undefined*.
+                        1. If _resolution_ is not an Object, then
+                          1. Perform FulfillPromise(_promise_, _resolution_).
+                          1. Return *undefined*.
+                        1. Let _then_ be Completion(Get(_resolution_, *"then"*)).
+                        1. If _then_ is an abrupt completion, then
+                          1. Perform RejectPromise(_promise_, _then_.[[Value]]).
+                          1. Return *undefined*.
+                        1. Let _thenAction_ be _then_.[[Value]].
+                        1. If IsCallable(_thenAction_) is *false*, then
+                          1. Perform FulfillPromise(_promise_, _resolution_).
+                          1. Return *undefined*.
+                        1. Let _thenJobCallback_ be HostMakeJobCallback(_thenAction_).
+                        1. Let _job_ be NewPromiseResolveThenableJob(_promise_, _resolution_, _thenJobCallback_).
+                        1. Perform HostEnqueuePromiseJob(_job_.[[Job]], _job_.[[Realm]]).
+                        1. Return *undefined*.
+                      </emu-alg>
+                      <p>The *"length"* property of a promise resolve function is *1*<sub>𝔽</sub>.</p>
+                    </emu-clause>
+                  </emu-clause>
+
+                  <emu-clause id="sec-fulfillpromise" type="abstract operation">
+                    <h1>
+                      FulfillPromise (
+                        _promise_: a Promise,
+                        _value_: an ECMAScript language value,
+                      ): ~unused~
+                    </h1>
+                    <dl class="header">
+                    </dl>
+                    <emu-alg>
+                      1. Assert: The value of _promise_.[[PromiseState]] is ~pending~.
+                      1. Let _reactions_ be _promise_.[[PromiseFulfillReactions]].
+                      1. Set _promise_.[[PromiseResult]] to _value_.
+                      1. Set _promise_.[[PromiseFulfillReactions]] to *undefined*.
+                      1. Set _promise_.[[PromiseRejectReactions]] to *undefined*.
+                      1. Set _promise_.[[PromiseState]] to ~fulfilled~.
+                      1. Perform TriggerPromiseReactions(_reactions_, _value_).
+                      1. Return ~unused~.
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-newpromisecapability" type="abstract operation" oldids="sec-getcapabilitiesexecutor-functions">
+                    <h1>
+                      NewPromiseCapability (
+                        _C_: an ECMAScript language value,
+                      ): either a normal completion containing a PromiseCapability Record or a throw completion
+                    </h1>
+                    <dl class="header">
+                      <dt>description</dt>
+                      <dd>It attempts to use _C_ as a constructor in the fashion of the built-in Promise constructor to create a promise and extract its `resolve` and `reject` functions. The promise plus the `resolve` and `reject` functions are used to initialize a new PromiseCapability Record.</dd>
+                    </dl>
+                    <emu-alg>
+                      1. If IsConstructor(_C_) is *false*, throw a *TypeError* exception.
+                      1. NOTE: _C_ is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see <emu-xref href="#sec-promise-executor"></emu-xref>).
+                      1. Let _resolvingFunctions_ be the Record { [[Resolve]]: *undefined*, [[Reject]]: *undefined* }.
+                      1. Let _executorClosure_ be a new Abstract Closure with parameters (_resolve_, _reject_) that captures _resolvingFunctions_ and performs the following steps when called:
+                        1. If _resolvingFunctions_.[[Resolve]] is not *undefined*, throw a *TypeError* exception.
+                        1. If _resolvingFunctions_.[[Reject]] is not *undefined*, throw a *TypeError* exception.
+                        1. Set _resolvingFunctions_.[[Resolve]] to _resolve_.
+                        1. Set _resolvingFunctions_.[[Reject]] to _reject_.
+                        1. Return *undefined*.
+                      1. Let _executor_ be CreateBuiltinFunction(_executorClosure_, 2, *""*, « »).
+                      1. Let _promise_ be ? Construct(_C_, « _executor_ »).
+                      1. If IsCallable(_resolvingFunctions_.[[Resolve]]) is *false*, throw a *TypeError* exception.
+                      1. If IsCallable(_resolvingFunctions_.[[Reject]]) is *false*, throw a *TypeError* exception.
+                      1. Return the PromiseCapability Record { [[Promise]]: _promise_, [[Resolve]]: _resolvingFunctions_.[[Resolve]], [[Reject]]: _resolvingFunctions_.[[Reject]] }.
+                    </emu-alg>
+                    <emu-note>
+                      <p>This abstract operation supports Promise subclassing, as it is generic on any constructor that calls a passed executor function argument in the same way as the Promise constructor. It is used to generalize static methods of the Promise constructor to any subclass.</p>
+                    </emu-note>
+                  </emu-clause>
+
+                  <emu-clause id="sec-ispromise" type="abstract operation">
+                    <h1>
+                      IsPromise (
+                        _x_: an ECMAScript language value,
+                      ): a Boolean
+                    </h1>
+                    <dl class="header">
+                      <dt>description</dt>
+                      <dd>It checks for the promise brand on an object.</dd>
+                    </dl>
+                    <emu-alg>
+                      1. If _x_ is not an Object, return *false*.
+                      1. If _x_ does not have a [[PromiseState]] internal slot, return *false*.
+                      1. Return *true*.
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-rejectpromise" type="abstract operation">
+                    <h1>
+                      RejectPromise (
+                        _promise_: a Promise,
+                        _reason_: an ECMAScript language value,
+                      ): ~unused~
+                    </h1>
+                    <dl class="header">
+                    </dl>
+                    <emu-alg>
+                      1. Assert: The value of _promise_.[[PromiseState]] is ~pending~.
+                      1. Let _reactions_ be _promise_.[[PromiseRejectReactions]].
+                      1. Set _promise_.[[PromiseResult]] to _reason_.
+                      1. Set _promise_.[[PromiseFulfillReactions]] to *undefined*.
+                      1. Set _promise_.[[PromiseRejectReactions]] to *undefined*.
+                      1. Set _promise_.[[PromiseState]] to ~rejected~.
+                      1. If _promise_.[[PromiseIsHandled]] is *false*, perform HostPromiseRejectionTracker(_promise_, *"reject"*).
+                      1. Perform TriggerPromiseReactions(_reactions_, _reason_).
+                      1. Return ~unused~.
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-triggerpromisereactions" type="abstract operation">
+                    <h1>
+                      TriggerPromiseReactions (
+                        _reactions_: a List of PromiseReaction Records,
+                        _argument_: an ECMAScript language value,
+                      ): ~unused~
+                    </h1>
+                    <dl class="header">
+                      <dt>description</dt>
+                      <dd>It enqueues a new Job for each record in _reactions_. Each such Job processes the [[Type]] and [[Handler]] of the PromiseReaction Record, and if the [[Handler]] is not ~empty~, calls it passing the given argument. If the [[Handler]] is ~empty~, the behaviour is determined by the [[Type]].</dd>
+                    </dl>
+                    <emu-alg>
+                      1. For each element _reaction_ of _reactions_, do
+                        1. Let _job_ be NewPromiseReactionJob(_reaction_, _argument_).
+                        1. Perform HostEnqueuePromiseJob(_job_.[[Job]], _job_.[[Realm]]).
+                      1. Return ~unused~.
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-host-promise-rejection-tracker" type="host-defined abstract operation">
+                    <h1>
+                      HostPromiseRejectionTracker (
+                        _promise_: a Promise,
+                        _operation_: *"reject"* or *"handle"*,
+                      ): ~unused~
+                    </h1>
+                    <dl class="header">
+                      <dt>description</dt>
+                      <dd>It allows host environments to track promise rejections.</dd>
+                    </dl>
+                    <p>The default implementation of HostPromiseRejectionTracker is to return ~unused~.</p>
+
+                    <emu-note>
+                      <p>HostPromiseRejectionTracker is called in two scenarios:</p>
+
+                      <ul>
+                        <li>When a promise is rejected without any handlers, it is called with its _operation_ argument set to *"reject"*.</li>
+                        <li>When a handler is added to a rejected promise for the first time, it is called with its _operation_ argument set to *"handle"*.</li>
+                      </ul>
+
+                      <p>A typical implementation of HostPromiseRejectionTracker might try to notify developers of unhandled rejections, while also being careful to notify them if such previous notifications are later invalidated by new handlers being attached.</p>
+                    </emu-note>
+
+                    <emu-note>
+                      <p>If _operation_ is *"handle"*, an implementation should not hold a reference to _promise_ in a way that would interfere with garbage collection. An implementation may hold a reference to _promise_ if _operation_ is *"reject"*, since it is expected that rejections will be rare and not on hot code paths.</p>
+                    </emu-note>
+                  </emu-clause>
                 </emu-clause>
-              </emu-clause>
 
-              <emu-clause id="sec-promisereaction-records">
-                <h1>PromiseReaction Records</h1>
-                <p>A <dfn variants="PromiseReaction Records">PromiseReaction Record</dfn> is a Record value used to store information about how a promise should react when it becomes resolved or rejected with a given value. PromiseReaction Records are created by the PerformPromiseThen abstract operation, and are used by the Abstract Closure returned by NewPromiseReactionJob.</p>
-                <p>PromiseReaction Records have the fields listed in <emu-xref href="#table-promisereaction-record-fields"></emu-xref>.</p>
-                <emu-table id="table-promisereaction-record-fields" caption="PromiseReaction Record Fields" oldids="table-58">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>
-                          Field Name
-                        </th>
-                        <th>
-                          Value
-                        </th>
-                        <th>
-                          Meaning
-                        </th>
-                      </tr>
-                    </thead>
-                    <tr>
-                      <td>
-                        [[Capability]]
-                      </td>
-                      <td>
-                        a PromiseCapability Record or *undefined*
-                      </td>
-                      <td>
-                        The capabilities of the promise for which this record provides a reaction handler.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        [[Type]]
-                      </td>
-                      <td>
-                        ~fulfill~ or ~reject~
-                      </td>
-                      <td>
-                        The [[Type]] is used when [[Handler]] is ~empty~ to allow for behaviour specific to the settlement type.
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        [[Handler]]
-                      </td>
-                      <td>
-                        a JobCallback Record or ~empty~
-                      </td>
-                      <td>
-                        The function that should be applied to the incoming value, and whose return value will govern what happens to the derived promise. If [[Handler]] is ~empty~, a function that depends on the value of [[Type]] will be used instead.
-                      </td>
-                    </tr>
-                  </table>
-                </emu-table>
-              </emu-clause>
+<emu-clause id="sec-promise-jobs">
 
-              <emu-clause id="sec-createresolvingfunctions" type="abstract operation">
-                <h1>
-                  CreateResolvingFunctions (
-                    _promise_: a Promise,
-                  ): a Record with fields [[Resolve]] (a function object) and [[Reject]] (a function object)
-                </h1>
-                <dl class="header">
-                </dl>
-                <emu-alg>
-                  1. Let _alreadyResolved_ be the Record { [[Value]]: *false* }.
-                  1. Let _stepsResolve_ be the algorithm steps defined in <emu-xref href="#sec-promise-resolve-functions" title></emu-xref>.
-                  1. Let _lengthResolve_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise-resolve-functions" title></emu-xref>.
-                  1. Let _resolve_ be CreateBuiltinFunction(_stepsResolve_, _lengthResolve_, *""*, « [[Promise]], [[AlreadyResolved]] »).
-                  1. Set _resolve_.[[Promise]] to _promise_.
-                  1. Set _resolve_.[[AlreadyResolved]] to _alreadyResolved_.
-                  1. Let _stepsReject_ be the algorithm steps defined in <emu-xref href="#sec-promise-reject-functions" title></emu-xref>.
-                  1. Let _lengthReject_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise-reject-functions" title></emu-xref>.
-                  1. Let _reject_ be CreateBuiltinFunction(_stepsReject_, _lengthReject_, *""*, « [[Promise]], [[AlreadyResolved]] »).
-                  1. Set _reject_.[[Promise]] to _promise_.
-                  1. Set _reject_.[[AlreadyResolved]] to _alreadyResolved_.
-                  1. Return the Record { [[Resolve]]: _resolve_, [[Reject]]: _reject_ }.
-                </emu-alg>
+### Promise Jobs
 
-                <emu-clause id="sec-promise-reject-functions">
-                  <h1>Promise Reject Functions</h1>
-                  <p>A promise reject function is an anonymous built-in function that has [[Promise]] and [[AlreadyResolved]] internal slots.</p>
-                  <p>When a promise reject function is called with argument _reason_, the following steps are taken:</p>
-                  <emu-alg>
-                    1. Let _F_ be the active function object.
-                    1. Assert: _F_ has a [[Promise]] internal slot whose value is an Object.
-                    1. Let _promise_ be _F_.[[Promise]].
-                    1. Let _alreadyResolved_ be _F_.[[AlreadyResolved]].
-                    1. If _alreadyResolved_.[[Value]] is *true*, return *undefined*.
-                    1. Set _alreadyResolved_.[[Value]] to *true*.
-                    1. Perform RejectPromise(_promise_, _reason_).
-                    1. Return *undefined*.
-                  </emu-alg>
-                  <p>The *"length"* property of a promise reject function is *1*<sub>𝔽</sub>.</p>
+                  <emu-clause id="sec-newpromisereactionjob" type="abstract operation" oldids="sec-promisereactionjob">
+                    <h1>
+                      NewPromiseReactionJob (
+                        _reaction_: a PromiseReaction Record,
+                        _argument_: an ECMAScript language value,
+                      ): a Record with fields [[Job]] (a Job Abstract Closure) and [[Realm]] (a Realm Record or *null*)
+                    </h1>
+                    <dl class="header">
+                      <dt>description</dt>
+                      <dd>It returns a new Job Abstract Closure that applies the appropriate handler to the incoming value, and uses the handler's return value to resolve or reject the derived promise associated with that handler.</dd>
+                    </dl>
+                    <emu-alg>
+                      1. Let _job_ be a new Job Abstract Closure with no parameters that captures _reaction_ and _argument_ and performs the following steps when called:
+                        1. Let _promiseCapability_ be _reaction_.[[Capability]].
+                        1. Let _type_ be _reaction_.[[Type]].
+                        1. Let _handler_ be _reaction_.[[Handler]].
+                        1. If _handler_ is ~empty~, then
+                          1. If _type_ is ~fulfill~, then
+                            1. Let _handlerResult_ be NormalCompletion(_argument_).
+                          1. Else,
+                            1. Assert: _type_ is ~reject~.
+                            1. Let _handlerResult_ be ThrowCompletion(_argument_).
+                        1. Else,
+                          1. Let _handlerResult_ be Completion(HostCallJobCallback(_handler_, *undefined*, « _argument_ »)).
+                        1. If _promiseCapability_ is *undefined*, then
+                          1. Assert: _handlerResult_ is not an abrupt completion.
+                          1. Return ~empty~.
+                        1. Assert: _promiseCapability_ is a PromiseCapability Record.
+                        1. If _handlerResult_ is an abrupt completion, then
+                          1. Return ? Call(_promiseCapability_.[[Reject]], *undefined*, « _handlerResult_.[[Value]] »).
+                        1. Else,
+                          1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _handlerResult_.[[Value]] »).
+                      1. Let _handlerRealm_ be *null*.
+                      1. If _reaction_.[[Handler]] is not ~empty~, then
+                        1. Let _getHandlerRealmResult_ be Completion(GetFunctionRealm(_reaction_.[[Handler]].[[Callback]])).
+                        1. If _getHandlerRealmResult_ is a normal completion, set _handlerRealm_ to _getHandlerRealmResult_.[[Value]].
+                        1. Else, set _handlerRealm_ to the current Realm Record.
+                        1. NOTE: _handlerRealm_ is never *null* unless the handler is *undefined*. When the handler is a revoked Proxy and no ECMAScript code runs, _handlerRealm_ is used to create error objects.
+                      1. Return the Record { [[Job]]: _job_, [[Realm]]: _handlerRealm_ }.
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-newpromiseresolvethenablejob" type="abstract operation" oldids="sec-promiseresolvethenablejob">
+                    <h1>
+                      NewPromiseResolveThenableJob (
+                        _promiseToResolve_: a Promise,
+                        _thenable_: an Object,
+                        _then_: a JobCallback Record,
+                      ): a Record with fields [[Job]] (a Job Abstract Closure) and [[Realm]] (a Realm Record)
+                    </h1>
+                    <dl class="header">
+                    </dl>
+                    <emu-alg>
+                      1. Let _job_ be a new Job Abstract Closure with no parameters that captures _promiseToResolve_, _thenable_, and _then_ and performs the following steps when called:
+                        1. Let _resolvingFunctions_ be CreateResolvingFunctions(_promiseToResolve_).
+                        1. Let _thenCallResult_ be Completion(HostCallJobCallback(_then_, _thenable_, « _resolvingFunctions_.[[Resolve]], _resolvingFunctions_.[[Reject]] »)).
+                        1. If _thenCallResult_ is an abrupt completion, then
+                          1. Return ? Call(_resolvingFunctions_.[[Reject]], *undefined*, « _thenCallResult_.[[Value]] »).
+                        1. Return ? _thenCallResult_.
+                      1. Let _getThenRealmResult_ be Completion(GetFunctionRealm(_then_.[[Callback]])).
+                      1. If _getThenRealmResult_ is a normal completion, let _thenRealm_ be _getThenRealmResult_.[[Value]].
+                      1. Else, let _thenRealm_ be the current Realm Record.
+                      1. NOTE: _thenRealm_ is never *null*. When _then_.[[Callback]] is a revoked Proxy and no code runs, _thenRealm_ is used to create error objects.
+                      1. Return the Record { [[Job]]: _job_, [[Realm]]: _thenRealm_ }.
+                    </emu-alg>
+                    <emu-note>
+                      <p>This Job uses the supplied thenable and its `then` method to resolve the given promise. This process must take place as a Job to ensure that the evaluation of the `then` method occurs after evaluation of any surrounding code has completed.</p>
+                    </emu-note>
+                  </emu-clause>
                 </emu-clause>
 
-                <emu-clause id="sec-promise-resolve-functions">
-                  <h1>Promise Resolve Functions</h1>
-                  <p>A promise resolve function is an anonymous built-in function that has [[Promise]] and [[AlreadyResolved]] internal slots.</p>
-                  <p>When a promise resolve function is called with argument _resolution_, the following steps are taken:</p>
-                  <emu-alg>
-                    1. Let _F_ be the active function object.
-                    1. Assert: _F_ has a [[Promise]] internal slot whose value is an Object.
-                    1. Let _promise_ be _F_.[[Promise]].
-                    1. Let _alreadyResolved_ be _F_.[[AlreadyResolved]].
-                    1. If _alreadyResolved_.[[Value]] is *true*, return *undefined*.
-                    1. Set _alreadyResolved_.[[Value]] to *true*.
-                    1. If SameValue(_resolution_, _promise_) is *true*, then
-                      1. Let _selfResolutionError_ be a newly created *TypeError* object.
-                      1. Perform RejectPromise(_promise_, _selfResolutionError_).
-                      1. Return *undefined*.
-                    1. If _resolution_ is not an Object, then
-                      1. Perform FulfillPromise(_promise_, _resolution_).
-                      1. Return *undefined*.
-                    1. Let _then_ be Completion(Get(_resolution_, *"then"*)).
-                    1. If _then_ is an abrupt completion, then
-                      1. Perform RejectPromise(_promise_, _then_.[[Value]]).
-                      1. Return *undefined*.
-                    1. Let _thenAction_ be _then_.[[Value]].
-                    1. If IsCallable(_thenAction_) is *false*, then
-                      1. Perform FulfillPromise(_promise_, _resolution_).
-                      1. Return *undefined*.
-                    1. Let _thenJobCallback_ be HostMakeJobCallback(_thenAction_).
-                    1. Let _job_ be NewPromiseResolveThenableJob(_promise_, _resolution_, _thenJobCallback_).
-                    1. Perform HostEnqueuePromiseJob(_job_.[[Job]], _job_.[[Realm]]).
-                    1. Return *undefined*.
-                  </emu-alg>
-                  <p>The *"length"* property of a promise resolve function is *1*<sub>𝔽</sub>.</p>
-                </emu-clause>
-              </emu-clause>
+<emu-clause id="sec-promise-constructor">
 
-              <emu-clause id="sec-fulfillpromise" type="abstract operation">
-                <h1>
-                  FulfillPromise (
-                    _promise_: a Promise,
-                    _value_: an ECMAScript language value,
-                  ): ~unused~
-                </h1>
-                <dl class="header">
-                </dl>
-                <emu-alg>
-                  1. Assert: The value of _promise_.[[PromiseState]] is ~pending~.
-                  1. Let _reactions_ be _promise_.[[PromiseFulfillReactions]].
-                  1. Set _promise_.[[PromiseResult]] to _value_.
-                  1. Set _promise_.[[PromiseFulfillReactions]] to *undefined*.
-                  1. Set _promise_.[[PromiseRejectReactions]] to *undefined*.
-                  1. Set _promise_.[[PromiseState]] to ~fulfilled~.
-                  1. Perform TriggerPromiseReactions(_reactions_, _value_).
-                  1. Return ~unused~.
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-newpromisecapability" type="abstract operation" oldids="sec-getcapabilitiesexecutor-functions">
-                <h1>
-                  NewPromiseCapability (
-                    _C_: an ECMAScript language value,
-                  ): either a normal completion containing a PromiseCapability Record or a throw completion
-                </h1>
-                <dl class="header">
-                  <dt>description</dt>
-                  <dd>It attempts to use _C_ as a constructor in the fashion of the built-in Promise constructor to create a promise and extract its `resolve` and `reject` functions. The promise plus the `resolve` and `reject` functions are used to initialize a new PromiseCapability Record.</dd>
-                </dl>
-                <emu-alg>
-                  1. If IsConstructor(_C_) is *false*, throw a *TypeError* exception.
-                  1. NOTE: _C_ is assumed to be a constructor function that supports the parameter conventions of the Promise constructor (see <emu-xref href="#sec-promise-executor"></emu-xref>).
-                  1. Let _resolvingFunctions_ be the Record { [[Resolve]]: *undefined*, [[Reject]]: *undefined* }.
-                  1. Let _executorClosure_ be a new Abstract Closure with parameters (_resolve_, _reject_) that captures _resolvingFunctions_ and performs the following steps when called:
-                    1. If _resolvingFunctions_.[[Resolve]] is not *undefined*, throw a *TypeError* exception.
-                    1. If _resolvingFunctions_.[[Reject]] is not *undefined*, throw a *TypeError* exception.
-                    1. Set _resolvingFunctions_.[[Resolve]] to _resolve_.
-                    1. Set _resolvingFunctions_.[[Reject]] to _reject_.
-                    1. Return *undefined*.
-                  1. Let _executor_ be CreateBuiltinFunction(_executorClosure_, 2, *""*, « »).
-                  1. Let _promise_ be ? Construct(_C_, « _executor_ »).
-                  1. If IsCallable(_resolvingFunctions_.[[Resolve]]) is *false*, throw a *TypeError* exception.
-                  1. If IsCallable(_resolvingFunctions_.[[Reject]]) is *false*, throw a *TypeError* exception.
-                  1. Return the PromiseCapability Record { [[Promise]]: _promise_, [[Resolve]]: _resolvingFunctions_.[[Resolve]], [[Reject]]: _resolvingFunctions_.[[Reject]] }.
-                </emu-alg>
-                <emu-note>
-                  <p>This abstract operation supports Promise subclassing, as it is generic on any constructor that calls a passed executor function argument in the same way as the Promise constructor. It is used to generalize static methods of the Promise constructor to any subclass.</p>
-                </emu-note>
-              </emu-clause>
-
-              <emu-clause id="sec-ispromise" type="abstract operation">
-                <h1>
-                  IsPromise (
-                    _x_: an ECMAScript language value,
-                  ): a Boolean
-                </h1>
-                <dl class="header">
-                  <dt>description</dt>
-                  <dd>It checks for the promise brand on an object.</dd>
-                </dl>
-                <emu-alg>
-                  1. If _x_ is not an Object, return *false*.
-                  1. If _x_ does not have a [[PromiseState]] internal slot, return *false*.
-                  1. Return *true*.
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-rejectpromise" type="abstract operation">
-                <h1>
-                  RejectPromise (
-                    _promise_: a Promise,
-                    _reason_: an ECMAScript language value,
-                  ): ~unused~
-                </h1>
-                <dl class="header">
-                </dl>
-                <emu-alg>
-                  1. Assert: The value of _promise_.[[PromiseState]] is ~pending~.
-                  1. Let _reactions_ be _promise_.[[PromiseRejectReactions]].
-                  1. Set _promise_.[[PromiseResult]] to _reason_.
-                  1. Set _promise_.[[PromiseFulfillReactions]] to *undefined*.
-                  1. Set _promise_.[[PromiseRejectReactions]] to *undefined*.
-                  1. Set _promise_.[[PromiseState]] to ~rejected~.
-                  1. If _promise_.[[PromiseIsHandled]] is *false*, perform HostPromiseRejectionTracker(_promise_, *"reject"*).
-                  1. Perform TriggerPromiseReactions(_reactions_, _reason_).
-                  1. Return ~unused~.
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-triggerpromisereactions" type="abstract operation">
-                <h1>
-                  TriggerPromiseReactions (
-                    _reactions_: a List of PromiseReaction Records,
-                    _argument_: an ECMAScript language value,
-                  ): ~unused~
-                </h1>
-                <dl class="header">
-                  <dt>description</dt>
-                  <dd>It enqueues a new Job for each record in _reactions_. Each such Job processes the [[Type]] and [[Handler]] of the PromiseReaction Record, and if the [[Handler]] is not ~empty~, calls it passing the given argument. If the [[Handler]] is ~empty~, the behaviour is determined by the [[Type]].</dd>
-                </dl>
-                <emu-alg>
-                  1. For each element _reaction_ of _reactions_, do
-                    1. Let _job_ be NewPromiseReactionJob(_reaction_, _argument_).
-                    1. Perform HostEnqueuePromiseJob(_job_.[[Job]], _job_.[[Realm]]).
-                  1. Return ~unused~.
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-host-promise-rejection-tracker" type="host-defined abstract operation">
-                <h1>
-                  HostPromiseRejectionTracker (
-                    _promise_: a Promise,
-                    _operation_: *"reject"* or *"handle"*,
-                  ): ~unused~
-                </h1>
-                <dl class="header">
-                  <dt>description</dt>
-                  <dd>It allows host environments to track promise rejections.</dd>
-                </dl>
-                <p>The default implementation of HostPromiseRejectionTracker is to return ~unused~.</p>
-
-                <emu-note>
-                  <p>HostPromiseRejectionTracker is called in two scenarios:</p>
-
+### The Promise Constructor
+                  <p>The Promise constructor:</p>
                   <ul>
-                    <li>When a promise is rejected without any handlers, it is called with its _operation_ argument set to *"reject"*.</li>
-                    <li>When a handler is added to a rejected promise for the first time, it is called with its _operation_ argument set to *"handle"*.</li>
+                    <li>is <dfn>%Promise%</dfn>.</li>
+                    <li>is the initial value of the *"Promise"* property of the global object.</li>
+                    <li>creates and initializes a new Promise when called as a constructor.</li>
+                    <li>is not intended to be called as a function and will throw an exception when called in that manner.</li>
+                    <li>may be used as the value in an `extends` clause of a class definition. Subclass constructors that intend to inherit the specified Promise behaviour must include a `super` call to the Promise constructor to create and initialize the subclass instance with the internal state necessary to support the `Promise` and `Promise.prototype` built-in methods.</li>
                   </ul>
 
-                  <p>A typical implementation of HostPromiseRejectionTracker might try to notify developers of unhandled rejections, while also being careful to notify them if such previous notifications are later invalidated by new handlers being attached.</p>
-                </emu-note>
-
-                <emu-note>
-                  <p>If _operation_ is *"handle"*, an implementation should not hold a reference to _promise_ in a way that would interfere with garbage collection. An implementation may hold a reference to _promise_ if _operation_ is *"reject"*, since it is expected that rejections will be rare and not on hot code paths.</p>
-                </emu-note>
-              </emu-clause>
-            </emu-clause>
-
-            <emu-clause id="sec-promise-jobs">
-              <h1>Promise Jobs</h1>
-
-              <emu-clause id="sec-newpromisereactionjob" type="abstract operation" oldids="sec-promisereactionjob">
-                <h1>
-                  NewPromiseReactionJob (
-                    _reaction_: a PromiseReaction Record,
-                    _argument_: an ECMAScript language value,
-                  ): a Record with fields [[Job]] (a Job Abstract Closure) and [[Realm]] (a Realm Record or *null*)
-                </h1>
-                <dl class="header">
-                  <dt>description</dt>
-                  <dd>It returns a new Job Abstract Closure that applies the appropriate handler to the incoming value, and uses the handler's return value to resolve or reject the derived promise associated with that handler.</dd>
-                </dl>
-                <emu-alg>
-                  1. Let _job_ be a new Job Abstract Closure with no parameters that captures _reaction_ and _argument_ and performs the following steps when called:
-                    1. Let _promiseCapability_ be _reaction_.[[Capability]].
-                    1. Let _type_ be _reaction_.[[Type]].
-                    1. Let _handler_ be _reaction_.[[Handler]].
-                    1. If _handler_ is ~empty~, then
-                      1. If _type_ is ~fulfill~, then
-                        1. Let _handlerResult_ be NormalCompletion(_argument_).
-                      1. Else,
-                        1. Assert: _type_ is ~reject~.
-                        1. Let _handlerResult_ be ThrowCompletion(_argument_).
-                    1. Else,
-                      1. Let _handlerResult_ be Completion(HostCallJobCallback(_handler_, *undefined*, « _argument_ »)).
-                    1. If _promiseCapability_ is *undefined*, then
-                      1. Assert: _handlerResult_ is not an abrupt completion.
-                      1. Return ~empty~.
-                    1. Assert: _promiseCapability_ is a PromiseCapability Record.
-                    1. If _handlerResult_ is an abrupt completion, then
-                      1. Return ? Call(_promiseCapability_.[[Reject]], *undefined*, « _handlerResult_.[[Value]] »).
-                    1. Else,
-                      1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _handlerResult_.[[Value]] »).
-                  1. Let _handlerRealm_ be *null*.
-                  1. If _reaction_.[[Handler]] is not ~empty~, then
-                    1. Let _getHandlerRealmResult_ be Completion(GetFunctionRealm(_reaction_.[[Handler]].[[Callback]])).
-                    1. If _getHandlerRealmResult_ is a normal completion, set _handlerRealm_ to _getHandlerRealmResult_.[[Value]].
-                    1. Else, set _handlerRealm_ to the current Realm Record.
-                    1. NOTE: _handlerRealm_ is never *null* unless the handler is *undefined*. When the handler is a revoked Proxy and no ECMAScript code runs, _handlerRealm_ is used to create error objects.
-                  1. Return the Record { [[Job]]: _job_, [[Realm]]: _handlerRealm_ }.
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-newpromiseresolvethenablejob" type="abstract operation" oldids="sec-promiseresolvethenablejob">
-                <h1>
-                  NewPromiseResolveThenableJob (
-                    _promiseToResolve_: a Promise,
-                    _thenable_: an Object,
-                    _then_: a JobCallback Record,
-                  ): a Record with fields [[Job]] (a Job Abstract Closure) and [[Realm]] (a Realm Record)
-                </h1>
-                <dl class="header">
-                </dl>
-                <emu-alg>
-                  1. Let _job_ be a new Job Abstract Closure with no parameters that captures _promiseToResolve_, _thenable_, and _then_ and performs the following steps when called:
-                    1. Let _resolvingFunctions_ be CreateResolvingFunctions(_promiseToResolve_).
-                    1. Let _thenCallResult_ be Completion(HostCallJobCallback(_then_, _thenable_, « _resolvingFunctions_.[[Resolve]], _resolvingFunctions_.[[Reject]] »)).
-                    1. If _thenCallResult_ is an abrupt completion, then
-                      1. Return ? Call(_resolvingFunctions_.[[Reject]], *undefined*, « _thenCallResult_.[[Value]] »).
-                    1. Return ? _thenCallResult_.
-                  1. Let _getThenRealmResult_ be Completion(GetFunctionRealm(_then_.[[Callback]])).
-                  1. If _getThenRealmResult_ is a normal completion, let _thenRealm_ be _getThenRealmResult_.[[Value]].
-                  1. Else, let _thenRealm_ be the current Realm Record.
-                  1. NOTE: _thenRealm_ is never *null*. When _then_.[[Callback]] is a revoked Proxy and no code runs, _thenRealm_ is used to create error objects.
-                  1. Return the Record { [[Job]]: _job_, [[Realm]]: _thenRealm_ }.
-                </emu-alg>
-                <emu-note>
-                  <p>This Job uses the supplied thenable and its `then` method to resolve the given promise. This process must take place as a Job to ensure that the evaluation of the `then` method occurs after evaluation of any surrounding code has completed.</p>
-                </emu-note>
-              </emu-clause>
-            </emu-clause>
-
-            <emu-clause id="sec-promise-constructor">
-              <h1>The Promise Constructor</h1>
-              <p>The Promise constructor:</p>
-              <ul>
-                <li>is <dfn>%Promise%</dfn>.</li>
-                <li>is the initial value of the *"Promise"* property of the global object.</li>
-                <li>creates and initializes a new Promise when called as a constructor.</li>
-                <li>is not intended to be called as a function and will throw an exception when called in that manner.</li>
-                <li>may be used as the value in an `extends` clause of a class definition. Subclass constructors that intend to inherit the specified Promise behaviour must include a `super` call to the Promise constructor to create and initialize the subclass instance with the internal state necessary to support the `Promise` and `Promise.prototype` built-in methods.</li>
-              </ul>
-
-              <emu-clause id="sec-promise-executor">
-                <h1>Promise ( _executor_ )</h1>
-                <p>This function performs the following steps when called:</p>
-                <emu-alg>
-                  1. If NewTarget is *undefined*, throw a *TypeError* exception.
-                  1. If IsCallable(_executor_) is *false*, throw a *TypeError* exception.
-                  1. Let _promise_ be ? OrdinaryCreateFromConstructor(NewTarget, *"%Promise.prototype%"*, « [[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]], [[PromiseIsHandled]] »).
-                  1. Set _promise_.[[PromiseState]] to ~pending~.
-                  1. Set _promise_.[[PromiseFulfillReactions]] to a new empty List.
-                  1. Set _promise_.[[PromiseRejectReactions]] to a new empty List.
-                  1. Set _promise_.[[PromiseIsHandled]] to *false*.
-                  1. Let _resolvingFunctions_ be CreateResolvingFunctions(_promise_).
-                  1. Let _completion_ be Completion(Call(_executor_, *undefined*, « _resolvingFunctions_.[[Resolve]], _resolvingFunctions_.[[Reject]] »)).
-                  1. If _completion_ is an abrupt completion, then
-                    1. Perform ? Call(_resolvingFunctions_.[[Reject]], *undefined*, « _completion_.[[Value]] »).
-                  1. Return _promise_.
-                </emu-alg>
-                <emu-note>
-                  <p>The _executor_ argument must be a function object. It is called for initiating and reporting completion of the possibly deferred action represented by this Promise. The executor is called with two arguments: _resolve_ and _reject_. These are functions that may be used by the _executor_ function to report eventual completion or failure of the deferred computation. Returning from the executor function does not mean that the deferred action has been completed but only that the request to eventually perform the deferred action has been accepted.</p>
-                  <p>The _resolve_ function that is passed to an _executor_ function accepts a single argument. The _executor_ code may eventually call the _resolve_ function to indicate that it wishes to resolve the associated Promise. The argument passed to the _resolve_ function represents the eventual value of the deferred action and can be either the actual fulfillment value or another promise which will provide the value if it is fulfilled.</p>
-                  <p>The _reject_ function that is passed to an _executor_ function accepts a single argument. The _executor_ code may eventually call the _reject_ function to indicate that the associated Promise is rejected and will never be fulfilled. The argument passed to the _reject_ function is used as the rejection value of the promise. Typically it will be an Error object.</p>
-                  <p>The resolve and reject functions passed to an _executor_ function by the Promise constructor have the capability to actually resolve and reject the associated promise. Subclasses may have different constructor behaviour that passes in customized values for resolve and reject.</p>
-                </emu-note>
-              </emu-clause>
-            </emu-clause>
-
-            <emu-clause id="sec-properties-of-the-promise-constructor">
-              <h1>Properties of the Promise Constructor</h1>
-              <p>The Promise constructor:</p>
-              <ul>
-                <li>has a [[Prototype]] internal slot whose value is %Function.prototype%.</li>
-                <li>has the following properties:</li>
-              </ul>
-
-              <emu-clause id="sec-promise.all">
-                <h1>Promise.all ( _iterable_ )</h1>
-                <p>This function returns a new promise which is fulfilled with an array of fulfillment values for the passed promises, or rejects with the reason of the first passed promise that rejects. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
-                  1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
-                  1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
-                  1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
-                  1. Let _result_ be Completion(PerformPromiseAll(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
-                  1. If _result_ is an abrupt completion, then
-                    1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
-                    1. IfAbruptRejectPromise(_result_, _promiseCapability_).
-                  1. Return ? _result_.
-                </emu-alg>
-                <emu-note>
-                  <p>This function requires its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
-                </emu-note>
-
-                <emu-clause id="sec-getpromiseresolve" type="abstract operation">
-                  <h1>
-                    GetPromiseResolve (
-                      _promiseConstructor_: a constructor,
-                    ): either a normal completion containing a function object or a throw completion
-                  </h1>
-                  <dl class="header">
-                  </dl>
-                  <emu-alg>
-                    1. Let _promiseResolve_ be ? Get(_promiseConstructor_, *"resolve"*).
-                    1. If IsCallable(_promiseResolve_) is *false*, throw a *TypeError* exception.
-                    1. Return _promiseResolve_.
-                  </emu-alg>
+                  <emu-clause id="sec-promise-executor">
+                    <h1>Promise ( _executor_ )</h1>
+                    <p>This function performs the following steps when called:</p>
+                    <emu-alg>
+                      1. If NewTarget is *undefined*, throw a *TypeError* exception.
+                      1. If IsCallable(_executor_) is *false*, throw a *TypeError* exception.
+                      1. Let _promise_ be ? OrdinaryCreateFromConstructor(NewTarget, *"%Promise.prototype%"*, « [[PromiseState]], [[PromiseResult]], [[PromiseFulfillReactions]], [[PromiseRejectReactions]], [[PromiseIsHandled]] »).
+                      1. Set _promise_.[[PromiseState]] to ~pending~.
+                      1. Set _promise_.[[PromiseFulfillReactions]] to a new empty List.
+                      1. Set _promise_.[[PromiseRejectReactions]] to a new empty List.
+                      1. Set _promise_.[[PromiseIsHandled]] to *false*.
+                      1. Let _resolvingFunctions_ be CreateResolvingFunctions(_promise_).
+                      1. Let _completion_ be Completion(Call(_executor_, *undefined*, « _resolvingFunctions_.[[Resolve]], _resolvingFunctions_.[[Reject]] »)).
+                      1. If _completion_ is an abrupt completion, then
+                        1. Perform ? Call(_resolvingFunctions_.[[Reject]], *undefined*, « _completion_.[[Value]] »).
+                      1. Return _promise_.
+                    </emu-alg>
+                    <emu-note>
+                      <p>The _executor_ argument must be a function object. It is called for initiating and reporting completion of the possibly deferred action represented by this Promise. The executor is called with two arguments: _resolve_ and _reject_. These are functions that may be used by the _executor_ function to report eventual completion or failure of the deferred computation. Returning from the executor function does not mean that the deferred action has been completed but only that the request to eventually perform the deferred action has been accepted.</p>
+                      <p>The _resolve_ function that is passed to an _executor_ function accepts a single argument. The _executor_ code may eventually call the _resolve_ function to indicate that it wishes to resolve the associated Promise. The argument passed to the _resolve_ function represents the eventual value of the deferred action and can be either the actual fulfillment value or another promise which will provide the value if it is fulfilled.</p>
+                      <p>The _reject_ function that is passed to an _executor_ function accepts a single argument. The _executor_ code may eventually call the _reject_ function to indicate that the associated Promise is rejected and will never be fulfilled. The argument passed to the _reject_ function is used as the rejection value of the promise. Typically it will be an Error object.</p>
+                      <p>The resolve and reject functions passed to an _executor_ function by the Promise constructor have the capability to actually resolve and reject the associated promise. Subclasses may have different constructor behaviour that passes in customized values for resolve and reject.</p>
+                    </emu-note>
+                  </emu-clause>
                 </emu-clause>
 
-                <emu-clause id="sec-performpromiseall" type="abstract operation">
-                  <h1>
-                    PerformPromiseAll (
-                      _iteratorRecord_: an Iterator Record,
-                      _constructor_: a constructor,
-                      _resultCapability_: a PromiseCapability Record,
-                      _promiseResolve_: a function object,
-                    ): either a normal completion containing an ECMAScript language value or a throw completion
-                  </h1>
-                  <dl class="header">
-                  </dl>
-                  <emu-alg>
-                    1. Let _values_ be a new empty List.
-                    1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
-                    1. Let _index_ be 0.
-                    1. Repeat,
-                      1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
-                      1. If _next_ is ~done~, then
+<emu-clause id="sec-properties-of-the-promise-constructor">
+
+### Properties of the Promise Constructor
+                  <p>The Promise constructor:</p>
+                  <ul>
+                    <li>has a [[Prototype]] internal slot whose value is %Function.prototype%.</li>
+                    <li>has the following properties:</li>
+                  </ul>
+
+                  <emu-clause id="sec-promise.all">
+                    <h1>Promise.all ( _iterable_ )</h1>
+                    <p>This function returns a new promise which is fulfilled with an array of fulfillment values for the passed promises, or rejects with the reason of the first passed promise that rejects. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
+                      1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
+                      1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
+                      1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
+                      1. Let _result_ be Completion(PerformPromiseAll(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
+                      1. If _result_ is an abrupt completion, then
+                        1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
+                        1. IfAbruptRejectPromise(_result_, _promiseCapability_).
+                      1. Return ? _result_.
+                    </emu-alg>
+                    <emu-note>
+                      <p>This function requires its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
+                    </emu-note>
+
+                    <emu-clause id="sec-getpromiseresolve" type="abstract operation">
+                      <h1>
+                        GetPromiseResolve (
+                          _promiseConstructor_: a constructor,
+                        ): either a normal completion containing a function object or a throw completion
+                      </h1>
+                      <dl class="header">
+                      </dl>
+                      <emu-alg>
+                        1. Let _promiseResolve_ be ? Get(_promiseConstructor_, *"resolve"*).
+                        1. If IsCallable(_promiseResolve_) is *false*, throw a *TypeError* exception.
+                        1. Return _promiseResolve_.
+                      </emu-alg>
+                    </emu-clause>
+
+                    <emu-clause id="sec-performpromiseall" type="abstract operation">
+                      <h1>
+                        PerformPromiseAll (
+                          _iteratorRecord_: an Iterator Record,
+                          _constructor_: a constructor,
+                          _resultCapability_: a PromiseCapability Record,
+                          _promiseResolve_: a function object,
+                        ): either a normal completion containing an ECMAScript language value or a throw completion
+                      </h1>
+                      <dl class="header">
+                      </dl>
+                      <emu-alg>
+                        1. Let _values_ be a new empty List.
+                        1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
+                        1. Let _index_ be 0.
+                        1. Repeat,
+                          1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
+                          1. If _next_ is ~done~, then
+                            1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
+                            1. If _remainingElementsCount_.[[Value]] = 0, then
+                              1. Let _valuesArray_ be CreateArrayFromList(_values_).
+                              1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
+                            1. Return _resultCapability_.[[Promise]].
+                          1. Append *undefined* to _values_.
+                          1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
+                          1. Let _steps_ be the algorithm steps defined in <emu-xref href="#sec-promise.all-resolve-element-functions" title></emu-xref>.
+                          1. Let _length_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.all-resolve-element-functions" title></emu-xref>.
+                          1. Let _onFulfilled_ be CreateBuiltinFunction(_steps_, _length_, *""*, « [[AlreadyCalled]], [[Index]], [[Values]], [[Capability]], [[RemainingElements]] »).
+                          1. Set _onFulfilled_.[[AlreadyCalled]] to *false*.
+                          1. Set _onFulfilled_.[[Index]] to _index_.
+                          1. Set _onFulfilled_.[[Values]] to _values_.
+                          1. Set _onFulfilled_.[[Capability]] to _resultCapability_.
+                          1. Set _onFulfilled_.[[RemainingElements]] to _remainingElementsCount_.
+                          1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
+                          1. Perform ? Invoke(_nextPromise_, *"then"*, « _onFulfilled_, _resultCapability_.[[Reject]] »).
+                          1. Set _index_ to _index_ + 1.
+                      </emu-alg>
+                    </emu-clause>
+
+                    <emu-clause id="sec-promise.all-resolve-element-functions">
+                      <h1>`Promise.all` Resolve Element Functions</h1>
+                      <p>A `Promise.all` resolve element function is an anonymous built-in function that is used to resolve a specific `Promise.all` element. Each `Promise.all` resolve element function has [[Index]], [[Values]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
+                      <p>When a `Promise.all` resolve element function is called with argument _x_, the following steps are taken:</p>
+                      <emu-alg>
+                        1. Let _F_ be the active function object.
+                        1. If _F_.[[AlreadyCalled]] is *true*, return *undefined*.
+                        1. Set _F_.[[AlreadyCalled]] to *true*.
+                        1. Let _index_ be _F_.[[Index]].
+                        1. Let _values_ be _F_.[[Values]].
+                        1. Let _promiseCapability_ be _F_.[[Capability]].
+                        1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
+                        1. Set _values_[_index_] to _x_.
                         1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
                         1. If _remainingElementsCount_.[[Value]] = 0, then
                           1. Let _valuesArray_ be CreateArrayFromList(_values_).
-                          1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
-                        1. Return _resultCapability_.[[Promise]].
-                      1. Append *undefined* to _values_.
-                      1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
-                      1. Let _steps_ be the algorithm steps defined in <emu-xref href="#sec-promise.all-resolve-element-functions" title></emu-xref>.
-                      1. Let _length_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.all-resolve-element-functions" title></emu-xref>.
-                      1. Let _onFulfilled_ be CreateBuiltinFunction(_steps_, _length_, *""*, « [[AlreadyCalled]], [[Index]], [[Values]], [[Capability]], [[RemainingElements]] »).
-                      1. Set _onFulfilled_.[[AlreadyCalled]] to *false*.
-                      1. Set _onFulfilled_.[[Index]] to _index_.
-                      1. Set _onFulfilled_.[[Values]] to _values_.
-                      1. Set _onFulfilled_.[[Capability]] to _resultCapability_.
-                      1. Set _onFulfilled_.[[RemainingElements]] to _remainingElementsCount_.
-                      1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
-                      1. Perform ? Invoke(_nextPromise_, *"then"*, « _onFulfilled_, _resultCapability_.[[Reject]] »).
-                      1. Set _index_ to _index_ + 1.
-                  </emu-alg>
-                </emu-clause>
+                          1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
+                        1. Return *undefined*.
+                      </emu-alg>
+                      <p>The *"length"* property of a `Promise.all` resolve element function is *1*<sub>𝔽</sub>.</p>
+                    </emu-clause>
+                  </emu-clause>
 
-                <emu-clause id="sec-promise.all-resolve-element-functions">
-                  <h1>`Promise.all` Resolve Element Functions</h1>
-                  <p>A `Promise.all` resolve element function is an anonymous built-in function that is used to resolve a specific `Promise.all` element. Each `Promise.all` resolve element function has [[Index]], [[Values]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
-                  <p>When a `Promise.all` resolve element function is called with argument _x_, the following steps are taken:</p>
-                  <emu-alg>
-                    1. Let _F_ be the active function object.
-                    1. If _F_.[[AlreadyCalled]] is *true*, return *undefined*.
-                    1. Set _F_.[[AlreadyCalled]] to *true*.
-                    1. Let _index_ be _F_.[[Index]].
-                    1. Let _values_ be _F_.[[Values]].
-                    1. Let _promiseCapability_ be _F_.[[Capability]].
-                    1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
-                    1. Set _values_[_index_] to _x_.
-                    1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
-                    1. If _remainingElementsCount_.[[Value]] = 0, then
-                      1. Let _valuesArray_ be CreateArrayFromList(_values_).
-                      1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
-                    1. Return *undefined*.
-                  </emu-alg>
-                  <p>The *"length"* property of a `Promise.all` resolve element function is *1*<sub>𝔽</sub>.</p>
-                </emu-clause>
-              </emu-clause>
+                  <emu-clause id="sec-promise.allsettled">
+                    <h1>Promise.allSettled ( _iterable_ )</h1>
+                    <p>This function returns a promise that is fulfilled with an array of promise state snapshots, but only after all the original promises have settled, i.e. become either fulfilled or rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
+                      1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
+                      1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
+                      1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
+                      1. Let _result_ be Completion(PerformPromiseAllSettled(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
+                      1. If _result_ is an abrupt completion, then
+                        1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
+                        1. IfAbruptRejectPromise(_result_, _promiseCapability_).
+                      1. Return ? _result_.
+                    </emu-alg>
+                    <emu-note>
+                      <p>This function requires its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
+                    </emu-note>
 
-              <emu-clause id="sec-promise.allsettled">
-                <h1>Promise.allSettled ( _iterable_ )</h1>
-                <p>This function returns a promise that is fulfilled with an array of promise state snapshots, but only after all the original promises have settled, i.e. become either fulfilled or rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
-                  1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
-                  1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
-                  1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
-                  1. Let _result_ be Completion(PerformPromiseAllSettled(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
-                  1. If _result_ is an abrupt completion, then
-                    1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
-                    1. IfAbruptRejectPromise(_result_, _promiseCapability_).
-                  1. Return ? _result_.
-                </emu-alg>
-                <emu-note>
-                  <p>This function requires its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
-                </emu-note>
+                    <emu-clause id="sec-performpromiseallsettled" type="abstract operation">
+                      <h1>
+                        PerformPromiseAllSettled (
+                          _iteratorRecord_: an Iterator Record,
+                          _constructor_: a constructor,
+                          _resultCapability_: a PromiseCapability Record,
+                          _promiseResolve_: a function object,
+                        ): either a normal completion containing an ECMAScript language value or a throw completion
+                      </h1>
+                      <dl class="header">
+                      </dl>
+                      <emu-alg>
+                        1. Let _values_ be a new empty List.
+                        1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
+                        1. Let _index_ be 0.
+                        1. Repeat,
+                          1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
+                          1. If _next_ is ~done~, then
+                            1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
+                            1. If _remainingElementsCount_.[[Value]] = 0, then
+                              1. Let _valuesArray_ be CreateArrayFromList(_values_).
+                              1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
+                            1. Return _resultCapability_.[[Promise]].
+                          1. Append *undefined* to _values_.
+                          1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
+                          1. Let _stepsFulfilled_ be the algorithm steps defined in <emu-xref href="#sec-promise.allsettled-resolve-element-functions" title></emu-xref>.
+                          1. Let _lengthFulfilled_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.allsettled-resolve-element-functions" title></emu-xref>.
+                          1. Let _onFulfilled_ be CreateBuiltinFunction(_stepsFulfilled_, _lengthFulfilled_, *""*, « [[AlreadyCalled]], [[Index]], [[Values]], [[Capability]], [[RemainingElements]] »).
+                          1. Let _alreadyCalled_ be the Record { [[Value]]: *false* }.
+                          1. Set _onFulfilled_.[[AlreadyCalled]] to _alreadyCalled_.
+                          1. Set _onFulfilled_.[[Index]] to _index_.
+                          1. Set _onFulfilled_.[[Values]] to _values_.
+                          1. Set _onFulfilled_.[[Capability]] to _resultCapability_.
+                          1. Set _onFulfilled_.[[RemainingElements]] to _remainingElementsCount_.
+                          1. Let _stepsRejected_ be the algorithm steps defined in <emu-xref href="#sec-promise.allsettled-reject-element-functions" title></emu-xref>.
+                          1. Let _lengthRejected_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.allsettled-reject-element-functions" title></emu-xref>.
+                          1. Let _onRejected_ be CreateBuiltinFunction(_stepsRejected_, _lengthRejected_, *""*, « [[AlreadyCalled]], [[Index]], [[Values]], [[Capability]], [[RemainingElements]] »).
+                          1. Set _onRejected_.[[AlreadyCalled]] to _alreadyCalled_.
+                          1. Set _onRejected_.[[Index]] to _index_.
+                          1. Set _onRejected_.[[Values]] to _values_.
+                          1. Set _onRejected_.[[Capability]] to _resultCapability_.
+                          1. Set _onRejected_.[[RemainingElements]] to _remainingElementsCount_.
+                          1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
+                          1. Perform ? Invoke(_nextPromise_, *"then"*, « _onFulfilled_, _onRejected_ »).
+                          1. Set _index_ to _index_ + 1.
+                      </emu-alg>
+                    </emu-clause>
 
-                <emu-clause id="sec-performpromiseallsettled" type="abstract operation">
-                  <h1>
-                    PerformPromiseAllSettled (
-                      _iteratorRecord_: an Iterator Record,
-                      _constructor_: a constructor,
-                      _resultCapability_: a PromiseCapability Record,
-                      _promiseResolve_: a function object,
-                    ): either a normal completion containing an ECMAScript language value or a throw completion
-                  </h1>
-                  <dl class="header">
-                  </dl>
-                  <emu-alg>
-                    1. Let _values_ be a new empty List.
-                    1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
-                    1. Let _index_ be 0.
-                    1. Repeat,
-                      1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
-                      1. If _next_ is ~done~, then
+                    <emu-clause id="sec-promise.allsettled-resolve-element-functions">
+                      <h1>`Promise.allSettled` Resolve Element Functions</h1>
+                      <p>A `Promise.allSettled` resolve element function is an anonymous built-in function that is used to resolve a specific `Promise.allSettled` element. Each `Promise.allSettled` resolve element function has [[Index]], [[Values]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
+                      <p>When a `Promise.allSettled` resolve element function is called with argument _x_, the following steps are taken:</p>
+                      <emu-alg>
+                        1. Let _F_ be the active function object.
+                        1. Let _alreadyCalled_ be _F_.[[AlreadyCalled]].
+                        1. If _alreadyCalled_.[[Value]] is *true*, return *undefined*.
+                        1. Set _alreadyCalled_.[[Value]] to *true*.
+                        1. Let _index_ be _F_.[[Index]].
+                        1. Let _values_ be _F_.[[Values]].
+                        1. Let _promiseCapability_ be _F_.[[Capability]].
+                        1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
+                        1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
+                        1. Perform ! CreateDataPropertyOrThrow(_obj_, *"status"*, *"fulfilled"*).
+                        1. Perform ! CreateDataPropertyOrThrow(_obj_, *"value"*, _x_).
+                        1. Set _values_[_index_] to _obj_.
                         1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
                         1. If _remainingElementsCount_.[[Value]] = 0, then
                           1. Let _valuesArray_ be CreateArrayFromList(_values_).
-                          1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
-                        1. Return _resultCapability_.[[Promise]].
-                      1. Append *undefined* to _values_.
-                      1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
-                      1. Let _stepsFulfilled_ be the algorithm steps defined in <emu-xref href="#sec-promise.allsettled-resolve-element-functions" title></emu-xref>.
-                      1. Let _lengthFulfilled_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.allsettled-resolve-element-functions" title></emu-xref>.
-                      1. Let _onFulfilled_ be CreateBuiltinFunction(_stepsFulfilled_, _lengthFulfilled_, *""*, « [[AlreadyCalled]], [[Index]], [[Values]], [[Capability]], [[RemainingElements]] »).
-                      1. Let _alreadyCalled_ be the Record { [[Value]]: *false* }.
-                      1. Set _onFulfilled_.[[AlreadyCalled]] to _alreadyCalled_.
-                      1. Set _onFulfilled_.[[Index]] to _index_.
-                      1. Set _onFulfilled_.[[Values]] to _values_.
-                      1. Set _onFulfilled_.[[Capability]] to _resultCapability_.
-                      1. Set _onFulfilled_.[[RemainingElements]] to _remainingElementsCount_.
-                      1. Let _stepsRejected_ be the algorithm steps defined in <emu-xref href="#sec-promise.allsettled-reject-element-functions" title></emu-xref>.
-                      1. Let _lengthRejected_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.allsettled-reject-element-functions" title></emu-xref>.
-                      1. Let _onRejected_ be CreateBuiltinFunction(_stepsRejected_, _lengthRejected_, *""*, « [[AlreadyCalled]], [[Index]], [[Values]], [[Capability]], [[RemainingElements]] »).
-                      1. Set _onRejected_.[[AlreadyCalled]] to _alreadyCalled_.
-                      1. Set _onRejected_.[[Index]] to _index_.
-                      1. Set _onRejected_.[[Values]] to _values_.
-                      1. Set _onRejected_.[[Capability]] to _resultCapability_.
-                      1. Set _onRejected_.[[RemainingElements]] to _remainingElementsCount_.
-                      1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
-                      1. Perform ? Invoke(_nextPromise_, *"then"*, « _onFulfilled_, _onRejected_ »).
-                      1. Set _index_ to _index_ + 1.
-                  </emu-alg>
-                </emu-clause>
+                          1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
+                        1. Return *undefined*.
+                      </emu-alg>
+                      <p>The *"length"* property of a `Promise.allSettled` resolve element function is *1*<sub>𝔽</sub>.</p>
+                    </emu-clause>
 
-                <emu-clause id="sec-promise.allsettled-resolve-element-functions">
-                  <h1>`Promise.allSettled` Resolve Element Functions</h1>
-                  <p>A `Promise.allSettled` resolve element function is an anonymous built-in function that is used to resolve a specific `Promise.allSettled` element. Each `Promise.allSettled` resolve element function has [[Index]], [[Values]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
-                  <p>When a `Promise.allSettled` resolve element function is called with argument _x_, the following steps are taken:</p>
-                  <emu-alg>
-                    1. Let _F_ be the active function object.
-                    1. Let _alreadyCalled_ be _F_.[[AlreadyCalled]].
-                    1. If _alreadyCalled_.[[Value]] is *true*, return *undefined*.
-                    1. Set _alreadyCalled_.[[Value]] to *true*.
-                    1. Let _index_ be _F_.[[Index]].
-                    1. Let _values_ be _F_.[[Values]].
-                    1. Let _promiseCapability_ be _F_.[[Capability]].
-                    1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
-                    1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
-                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"status"*, *"fulfilled"*).
-                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"value"*, _x_).
-                    1. Set _values_[_index_] to _obj_.
-                    1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
-                    1. If _remainingElementsCount_.[[Value]] = 0, then
-                      1. Let _valuesArray_ be CreateArrayFromList(_values_).
-                      1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
-                    1. Return *undefined*.
-                  </emu-alg>
-                  <p>The *"length"* property of a `Promise.allSettled` resolve element function is *1*<sub>𝔽</sub>.</p>
-                </emu-clause>
+                    <emu-clause id="sec-promise.allsettled-reject-element-functions">
+                      <h1>`Promise.allSettled` Reject Element Functions</h1>
+                      <p>A `Promise.allSettled` reject element function is an anonymous built-in function that is used to reject a specific `Promise.allSettled` element. Each `Promise.allSettled` reject element function has [[Index]], [[Values]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
+                      <p>When a `Promise.allSettled` reject element function is called with argument _x_, the following steps are taken:</p>
+                      <emu-alg>
+                        1. Let _F_ be the active function object.
+                        1. Let _alreadyCalled_ be _F_.[[AlreadyCalled]].
+                        1. If _alreadyCalled_.[[Value]] is *true*, return *undefined*.
+                        1. Set _alreadyCalled_.[[Value]] to *true*.
+                        1. Let _index_ be _F_.[[Index]].
+                        1. Let _values_ be _F_.[[Values]].
+                        1. Let _promiseCapability_ be _F_.[[Capability]].
+                        1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
+                        1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
+                        1. Perform ! CreateDataPropertyOrThrow(_obj_, *"status"*, *"rejected"*).
+                        1. Perform ! CreateDataPropertyOrThrow(_obj_, *"reason"*, _x_).
+                        1. Set _values_[_index_] to _obj_.
+                        1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
+                        1. If _remainingElementsCount_.[[Value]] = 0, then
+                          1. Let _valuesArray_ be CreateArrayFromList(_values_).
+                          1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
+                        1. Return *undefined*.
+                      </emu-alg>
+                      <p>The *"length"* property of a `Promise.allSettled` reject element function is *1*<sub>𝔽</sub>.</p>
+                    </emu-clause>
+                  </emu-clause>
 
-                <emu-clause id="sec-promise.allsettled-reject-element-functions">
-                  <h1>`Promise.allSettled` Reject Element Functions</h1>
-                  <p>A `Promise.allSettled` reject element function is an anonymous built-in function that is used to reject a specific `Promise.allSettled` element. Each `Promise.allSettled` reject element function has [[Index]], [[Values]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
-                  <p>When a `Promise.allSettled` reject element function is called with argument _x_, the following steps are taken:</p>
-                  <emu-alg>
-                    1. Let _F_ be the active function object.
-                    1. Let _alreadyCalled_ be _F_.[[AlreadyCalled]].
-                    1. If _alreadyCalled_.[[Value]] is *true*, return *undefined*.
-                    1. Set _alreadyCalled_.[[Value]] to *true*.
-                    1. Let _index_ be _F_.[[Index]].
-                    1. Let _values_ be _F_.[[Values]].
-                    1. Let _promiseCapability_ be _F_.[[Capability]].
-                    1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
-                    1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
-                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"status"*, *"rejected"*).
-                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"reason"*, _x_).
-                    1. Set _values_[_index_] to _obj_.
-                    1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
-                    1. If _remainingElementsCount_.[[Value]] = 0, then
-                      1. Let _valuesArray_ be CreateArrayFromList(_values_).
-                      1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _valuesArray_ »).
-                    1. Return *undefined*.
-                  </emu-alg>
-                  <p>The *"length"* property of a `Promise.allSettled` reject element function is *1*<sub>𝔽</sub>.</p>
-                </emu-clause>
-              </emu-clause>
+                  <emu-clause id="sec-promise.any">
+                    <h1>Promise.any ( _iterable_ )</h1>
+                    <p>This function returns a promise that is fulfilled by the first given promise to be fulfilled, or rejected with an `AggregateError` holding the rejection reasons if all of the given promises are rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
+                      1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
+                      1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
+                      1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
+                      1. Let _result_ be Completion(PerformPromiseAny(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
+                      1. If _result_ is an abrupt completion, then
+                        1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
+                        1. IfAbruptRejectPromise(_result_, _promiseCapability_).
+                      1. Return ? _result_.
+                    </emu-alg>
+                    <emu-note>
+                      <p>This function requires its *this* value to be a constructor function that supports the parameter conventions of the `Promise` constructor.</p>
+                    </emu-note>
 
-              <emu-clause id="sec-promise.any">
-                <h1>Promise.any ( _iterable_ )</h1>
-                <p>This function returns a promise that is fulfilled by the first given promise to be fulfilled, or rejected with an `AggregateError` holding the rejection reasons if all of the given promises are rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
-                  1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
-                  1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
-                  1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
-                  1. Let _result_ be Completion(PerformPromiseAny(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
-                  1. If _result_ is an abrupt completion, then
-                    1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
-                    1. IfAbruptRejectPromise(_result_, _promiseCapability_).
-                  1. Return ? _result_.
-                </emu-alg>
-                <emu-note>
-                  <p>This function requires its *this* value to be a constructor function that supports the parameter conventions of the `Promise` constructor.</p>
-                </emu-note>
+                    <emu-clause id="sec-performpromiseany" type="abstract operation">
+                      <h1>
+                        PerformPromiseAny (
+                          _iteratorRecord_: an Iterator Record,
+                          _constructor_: a constructor,
+                          _resultCapability_: a PromiseCapability Record,
+                          _promiseResolve_: a function object,
+                        ): either a normal completion containing an ECMAScript language value or a throw completion
+                      </h1>
+                      <dl class="header">
+                      </dl>
+                      <emu-alg>
+                        1. Let _errors_ be a new empty List.
+                        1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
+                        1. Let _index_ be 0.
+                        1. Repeat,
+                          1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
+                          1. If _next_ is ~done~, then
+                            1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
+                            1. If _remainingElementsCount_.[[Value]] = 0, then
+                              1. Let _error_ be a newly created *AggregateError* object.
+                              1. Perform ! DefinePropertyOrThrow(_error_, *"errors"*, PropertyDescriptor { [[Configurable]]: *true*, [[Enumerable]]: *false*, [[Writable]]: *true*, [[Value]]: CreateArrayFromList(_errors_) }).
+                              1. Return ThrowCompletion(_error_).
+                            1. Return _resultCapability_.[[Promise]].
+                          1. Append *undefined* to _errors_.
+                          1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
+                          1. Let _stepsRejected_ be the algorithm steps defined in <emu-xref href="#sec-promise.any-reject-element-functions" title></emu-xref>.
+                          1. Let _lengthRejected_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.any-reject-element-functions" title></emu-xref>.
+                          1. Let _onRejected_ be CreateBuiltinFunction(_stepsRejected_, _lengthRejected_, *""*, « [[AlreadyCalled]], [[Index]], [[Errors]], [[Capability]], [[RemainingElements]] »).
+                          1. Set _onRejected_.[[AlreadyCalled]] to *false*.
+                          1. Set _onRejected_.[[Index]] to _index_.
+                          1. Set _onRejected_.[[Errors]] to _errors_.
+                          1. Set _onRejected_.[[Capability]] to _resultCapability_.
+                          1. Set _onRejected_.[[RemainingElements]] to _remainingElementsCount_.
+                          1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
+                          1. Perform ? Invoke(_nextPromise_, *"then"*, « _resultCapability_.[[Resolve]], _onRejected_ »).
+                          1. Set _index_ to _index_ + 1.
+                      </emu-alg>
+                    </emu-clause>
 
-                <emu-clause id="sec-performpromiseany" type="abstract operation">
-                  <h1>
-                    PerformPromiseAny (
-                      _iteratorRecord_: an Iterator Record,
-                      _constructor_: a constructor,
-                      _resultCapability_: a PromiseCapability Record,
-                      _promiseResolve_: a function object,
-                    ): either a normal completion containing an ECMAScript language value or a throw completion
-                  </h1>
-                  <dl class="header">
-                  </dl>
-                  <emu-alg>
-                    1. Let _errors_ be a new empty List.
-                    1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
-                    1. Let _index_ be 0.
-                    1. Repeat,
-                      1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
-                      1. If _next_ is ~done~, then
+                    <emu-clause id="sec-promise.any-reject-element-functions">
+                      <h1>`Promise.any` Reject Element Functions</h1>
+                      <p>A `Promise.any` reject element function is an anonymous built-in function that is used to reject a specific `Promise.any` element. Each `Promise.any` reject element function has [[Index]], [[Errors]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
+                      <p>When a `Promise.any` reject element function is called with argument _x_, the following steps are taken:</p>
+                      <emu-alg>
+                        1. Let _F_ be the active function object.
+                        1. If _F_.[[AlreadyCalled]] is *true*, return *undefined*.
+                        1. Set _F_.[[AlreadyCalled]] to *true*.
+                        1. Let _index_ be _F_.[[Index]].
+                        1. Let _errors_ be _F_.[[Errors]].
+                        1. Let _promiseCapability_ be _F_.[[Capability]].
+                        1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
+                        1. Set _errors_[_index_] to _x_.
                         1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
                         1. If _remainingElementsCount_.[[Value]] = 0, then
                           1. Let _error_ be a newly created *AggregateError* object.
                           1. Perform ! DefinePropertyOrThrow(_error_, *"errors"*, PropertyDescriptor { [[Configurable]]: *true*, [[Enumerable]]: *false*, [[Writable]]: *true*, [[Value]]: CreateArrayFromList(_errors_) }).
-                          1. Return ThrowCompletion(_error_).
-                        1. Return _resultCapability_.[[Promise]].
-                      1. Append *undefined* to _errors_.
-                      1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
-                      1. Let _stepsRejected_ be the algorithm steps defined in <emu-xref href="#sec-promise.any-reject-element-functions" title></emu-xref>.
-                      1. Let _lengthRejected_ be the number of non-optional parameters of the function definition in <emu-xref href="#sec-promise.any-reject-element-functions" title></emu-xref>.
-                      1. Let _onRejected_ be CreateBuiltinFunction(_stepsRejected_, _lengthRejected_, *""*, « [[AlreadyCalled]], [[Index]], [[Errors]], [[Capability]], [[RemainingElements]] »).
-                      1. Set _onRejected_.[[AlreadyCalled]] to *false*.
-                      1. Set _onRejected_.[[Index]] to _index_.
-                      1. Set _onRejected_.[[Errors]] to _errors_.
-                      1. Set _onRejected_.[[Capability]] to _resultCapability_.
-                      1. Set _onRejected_.[[RemainingElements]] to _remainingElementsCount_.
-                      1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
-                      1. Perform ? Invoke(_nextPromise_, *"then"*, « _resultCapability_.[[Resolve]], _onRejected_ »).
-                      1. Set _index_ to _index_ + 1.
-                  </emu-alg>
+                          1. Return ? Call(_promiseCapability_.[[Reject]], *undefined*, « _error_ »).
+                        1. Return *undefined*.
+                      </emu-alg>
+                      <p>The *"length"* property of a `Promise.any` reject element function is *1*<sub>𝔽</sub>.</p>
+                    </emu-clause>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.prototype">
+                    <h1>Promise.prototype</h1>
+                    <p>The initial value of `Promise.prototype` is the Promise prototype object.</p>
+                    <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.</p>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.race">
+                    <h1>Promise.race ( _iterable_ )</h1>
+                    <p>This function returns a new promise which is settled in the same way as the first passed promise to settle. It resolves all elements of the passed _iterable_ to promises as it runs this algorithm.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
+                      1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
+                      1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
+                      1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
+                      1. Let _result_ be Completion(PerformPromiseRace(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
+                      1. If _result_ is an abrupt completion, then
+                        1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
+                        1. IfAbruptRejectPromise(_result_, _promiseCapability_).
+                      1. Return ? _result_.
+                    </emu-alg>
+                    <emu-note>
+                      <p>If the _iterable_ argument yields no values or if none of the promises yielded by _iterable_ ever settle, then the pending promise returned by this method will never be settled.</p>
+                    </emu-note>
+                    <emu-note>
+                      <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor. It also expects that its *this* value provides a `resolve` method.</p>
+                    </emu-note>
+
+                    <emu-clause id="sec-performpromiserace" type="abstract operation">
+                      <h1>
+                        PerformPromiseRace (
+                          _iteratorRecord_: an Iterator Record,
+                          _constructor_: a constructor,
+                          _resultCapability_: a PromiseCapability Record,
+                          _promiseResolve_: a function object,
+                        ): either a normal completion containing an ECMAScript language value or a throw completion
+                      </h1>
+                      <dl class="header">
+                      </dl>
+                      <emu-alg>
+                        1. Repeat,
+                          1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
+                          1. If _next_ is ~done~, then
+                            1. Return _resultCapability_.[[Promise]].
+                          1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
+                          1. Perform ? Invoke(_nextPromise_, *"then"*, « _resultCapability_.[[Resolve]], _resultCapability_.[[Reject]] »).
+                      </emu-alg>
+                    </emu-clause>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.reject">
+                    <h1>Promise.reject ( _r_ )</h1>
+                    <p>This function returns a new promise rejected with the passed argument.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Perform ? Call(_promiseCapability_.[[Reject]], *undefined*, « _r_ »).
+                      1. Return _promiseCapability_.[[Promise]].
+                    </emu-alg>
+                    <emu-note>
+                      <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
+                    </emu-note>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.resolve">
+                    <h1>Promise.resolve ( _x_ )</h1>
+                    <p>This function returns either a new promise resolved with the passed argument, or the argument itself if the argument is a promise produced by this constructor.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. If _C_ is not an Object, throw a *TypeError* exception.
+                      1. Return ? PromiseResolve(_C_, _x_).
+                    </emu-alg>
+                    <emu-note>
+                      <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
+                    </emu-note>
+
+                    <emu-clause id="sec-promise-resolve" type="abstract operation">
+                      <h1>
+                        PromiseResolve (
+                          _C_: an Object,
+                          _x_: an ECMAScript language value,
+                        ): either a normal completion containing an ECMAScript language value or a throw completion
+                      </h1>
+                      <dl class="header">
+                        <dt>description</dt>
+                        <dd>It returns a new promise resolved with _x_.</dd>
+                      </dl>
+                      <emu-alg>
+                        1. If IsPromise(_x_) is *true*, then
+                          1. Let _xConstructor_ be ? Get(_x_, *"constructor"*).
+                          1. If SameValue(_xConstructor_, _C_) is *true*, return _x_.
+                        1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                        1. Perform ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _x_ »).
+                        1. Return _promiseCapability_.[[Promise]].
+                      </emu-alg>
+                    </emu-clause>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.try">
+                    <h1>Promise.try ( _callback_, ..._args_ )</h1>
+                    <p>This function performs the following steps when called:</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. If _C_ is not an Object, throw a *TypeError* exception.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Let _status_ be Completion(Call(_callback_, *undefined*, _args_)).
+                      1. If _status_ is an abrupt completion, then
+                        1. Perform ? Call(_promiseCapability_.[[Reject]], *undefined*, « _status_.[[Value]] »).
+                      1. Else,
+                        1. Perform ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _status_.[[Value]] »).
+                      1. Return _promiseCapability_.[[Promise]].
+                    </emu-alg>
+                    <emu-note>
+                      <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
+                    </emu-note>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.withResolvers">
+                    <h1>Promise.withResolvers ( )</h1>
+                    <p>This function returns an object with three properties: a new promise together with the `resolve` and `reject` functions associated with it.</p>
+                    <emu-alg>
+                      1. Let _C_ be the *this* value.
+                      1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
+                      1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
+                      1. Perform ! CreateDataPropertyOrThrow(_obj_, *"promise"*, _promiseCapability_.[[Promise]]).
+                      1. Perform ! CreateDataPropertyOrThrow(_obj_, *"resolve"*, _promiseCapability_.[[Resolve]]).
+                      1. Perform ! CreateDataPropertyOrThrow(_obj_, *"reject"*, _promiseCapability_.[[Reject]]).
+                      1. Return _obj_.
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause oldids="sec-get-promise-@@species" id="sec-get-promise-%symbol.species%">
+                    <h1>get Promise [ %Symbol.species% ]</h1>
+                    <p>`Promise[%Symbol.species%]` is an accessor property whose set accessor function is *undefined*. Its get accessor function performs the following steps when called:</p>
+                    <emu-alg>
+                      1. Return the *this* value.
+                    </emu-alg>
+                    <p>The value of the *"name"* property of this function is *"get [Symbol.species]"*.</p>
+                    <emu-note>
+                      <p>Promise prototype methods normally use their *this* value's constructor to create a derived object. However, a subclass constructor may over-ride that default behaviour by redefining its %Symbol.species% property.</p>
+                    </emu-note>
+                  </emu-clause>
                 </emu-clause>
 
-                <emu-clause id="sec-promise.any-reject-element-functions">
-                  <h1>`Promise.any` Reject Element Functions</h1>
-                  <p>A `Promise.any` reject element function is an anonymous built-in function that is used to reject a specific `Promise.any` element. Each `Promise.any` reject element function has [[Index]], [[Errors]], [[Capability]], [[RemainingElements]], and [[AlreadyCalled]] internal slots.</p>
-                  <p>When a `Promise.any` reject element function is called with argument _x_, the following steps are taken:</p>
-                  <emu-alg>
-                    1. Let _F_ be the active function object.
-                    1. If _F_.[[AlreadyCalled]] is *true*, return *undefined*.
-                    1. Set _F_.[[AlreadyCalled]] to *true*.
-                    1. Let _index_ be _F_.[[Index]].
-                    1. Let _errors_ be _F_.[[Errors]].
-                    1. Let _promiseCapability_ be _F_.[[Capability]].
-                    1. Let _remainingElementsCount_ be _F_.[[RemainingElements]].
-                    1. Set _errors_[_index_] to _x_.
-                    1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
-                    1. If _remainingElementsCount_.[[Value]] = 0, then
-                      1. Let _error_ be a newly created *AggregateError* object.
-                      1. Perform ! DefinePropertyOrThrow(_error_, *"errors"*, PropertyDescriptor { [[Configurable]]: *true*, [[Enumerable]]: *false*, [[Writable]]: *true*, [[Value]]: CreateArrayFromList(_errors_) }).
-                      1. Return ? Call(_promiseCapability_.[[Reject]], *undefined*, « _error_ »).
-                    1. Return *undefined*.
-                  </emu-alg>
-                  <p>The *"length"* property of a `Promise.any` reject element function is *1*<sub>𝔽</sub>.</p>
+<emu-clause id="sec-properties-of-the-promise-prototype-object">
+
+### Properties of the Promise Prototype Object
+                  <p>The <dfn>Promise prototype object</dfn>:</p>
+                  <ul>
+                    <li>is <dfn>%Promise.prototype%</dfn>.</li>
+                    <li>has a [[Prototype]] internal slot whose value is %Object.prototype%.</li>
+                    <li>is an ordinary object.</li>
+                    <li>does not have a [[PromiseState]] internal slot or any of the other internal slots of Promise instances.</li>
+                  </ul>
+
+                  <emu-clause id="sec-promise.prototype.catch">
+                    <h1>Promise.prototype.catch ( _onRejected_ )</h1>
+                    <p>This method performs the following steps when called:</p>
+                    <emu-alg>
+                      1. Let _promise_ be the *this* value.
+                      1. Return ? Invoke(_promise_, *"then"*, « *undefined*, _onRejected_ »).
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.prototype.constructor">
+                    <h1>Promise.prototype.constructor</h1>
+                    <p>The initial value of `Promise.prototype.constructor` is %Promise%.</p>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.prototype.finally" oldids="sec-thenfinallyfunctions,sec-catchfinallyfunctions">
+                    <h1>Promise.prototype.finally ( _onFinally_ )</h1>
+                    <p>This method performs the following steps when called:</p>
+                    <emu-alg>
+                      1. Let _promise_ be the *this* value.
+                      1. If _promise_ is not an Object, throw a *TypeError* exception.
+                      1. Let _C_ be ? SpeciesConstructor(_promise_, %Promise%).
+                      1. Assert: IsConstructor(_C_) is *true*.
+                      1. If IsCallable(_onFinally_) is *false*, then
+                        1. Let _thenFinally_ be _onFinally_.
+                        1. Let _catchFinally_ be _onFinally_.
+                      1. Else,
+                        1. Let _thenFinallyClosure_ be a new Abstract Closure with parameters (_value_) that captures _onFinally_ and _C_ and performs the following steps when called:
+                          1. Let _result_ be ? Call(_onFinally_, *undefined*).
+                          1. Let _p_ be ? PromiseResolve(_C_, _result_).
+                          1. Let _returnValue_ be a new Abstract Closure with no parameters that captures _value_ and performs the following steps when called:
+                            1. Return _value_.
+                          1. Let _valueThunk_ be CreateBuiltinFunction(_returnValue_, 0, *""*, « »).
+                          1. Return ? Invoke(_p_, *"then"*, « _valueThunk_ »).
+                        1. Let _thenFinally_ be CreateBuiltinFunction(_thenFinallyClosure_, 1, *""*, « »).
+                        1. Let _catchFinallyClosure_ be a new Abstract Closure with parameters (_reason_) that captures _onFinally_ and _C_ and performs the following steps when called:
+                          1. Let _result_ be ? Call(_onFinally_, *undefined*).
+                          1. Let _p_ be ? PromiseResolve(_C_, _result_).
+                          1. Let _throwReason_ be a new Abstract Closure with no parameters that captures _reason_ and performs the following steps when called:
+                            1. Return ThrowCompletion(_reason_).
+                          1. Let _thrower_ be CreateBuiltinFunction(_throwReason_, 0, *""*, « »).
+                          1. Return ? Invoke(_p_, *"then"*, « _thrower_ »).
+                        1. Let _catchFinally_ be CreateBuiltinFunction(_catchFinallyClosure_, 1, *""*, « »).
+                      1. Return ? Invoke(_promise_, *"then"*, « _thenFinally_, _catchFinally_ »).
+                    </emu-alg>
+                  </emu-clause>
+
+                  <emu-clause id="sec-promise.prototype.then">
+                    <h1>Promise.prototype.then ( _onFulfilled_, _onRejected_ )</h1>
+                    <p>This method performs the following steps when called:</p>
+                    <emu-alg>
+                      1. Let _promise_ be the *this* value.
+                      1. If IsPromise(_promise_) is *false*, throw a *TypeError* exception.
+                      1. Let _C_ be ? SpeciesConstructor(_promise_, %Promise%).
+                      1. Let _resultCapability_ be ? NewPromiseCapability(_C_).
+                      1. Return PerformPromiseThen(_promise_, _onFulfilled_, _onRejected_, _resultCapability_).
+                    </emu-alg>
+
+                    <emu-clause id="sec-performpromisethen" type="abstract operation">
+                      <h1>
+                        PerformPromiseThen (
+                          _promise_: a Promise,
+                          _onFulfilled_: an ECMAScript language value,
+                          _onRejected_: an ECMAScript language value,
+                          optional _resultCapability_: a PromiseCapability Record,
+                        ): an ECMAScript language value
+                      </h1>
+                      <dl class="header">
+                        <dt>description</dt>
+                        <dd>It performs the “then” operation on _promise_ using _onFulfilled_ and _onRejected_ as its settlement actions. If _resultCapability_ is passed, the result is stored by updating _resultCapability_'s promise. If it is not passed, then PerformPromiseThen is being called by a specification-internal operation where the result does not matter.</dd>
+                      </dl>
+                      <emu-alg>
+                        1. Assert: IsPromise(_promise_) is *true*.
+                        1. If _resultCapability_ is not present, then
+                          1. Set _resultCapability_ to *undefined*.
+                        1. If IsCallable(_onFulfilled_) is *false*, then
+                          1. Let _onFulfilledJobCallback_ be ~empty~.
+                        1. Else,
+                          1. Let _onFulfilledJobCallback_ be HostMakeJobCallback(_onFulfilled_).
+                        1. If IsCallable(_onRejected_) is *false*, then
+                          1. Let _onRejectedJobCallback_ be ~empty~.
+                        1. Else,
+                          1. Let _onRejectedJobCallback_ be HostMakeJobCallback(_onRejected_).
+                        1. Let _fulfillReaction_ be the PromiseReaction Record { [[Capability]]: _resultCapability_, [[Type]]: ~fulfill~, [[Handler]]: _onFulfilledJobCallback_ }.
+                        1. Let _rejectReaction_ be the PromiseReaction Record { [[Capability]]: _resultCapability_, [[Type]]: ~reject~, [[Handler]]: _onRejectedJobCallback_ }.
+                        1. If _promise_.[[PromiseState]] is ~pending~, then
+                          1. Append _fulfillReaction_ to _promise_.[[PromiseFulfillReactions]].
+                          1. Append _rejectReaction_ to _promise_.[[PromiseRejectReactions]].
+                        1. Else if _promise_.[[PromiseState]] is ~fulfilled~, then
+                          1. Let _value_ be _promise_.[[PromiseResult]].
+                          1. Let _fulfillJob_ be NewPromiseReactionJob(_fulfillReaction_, _value_).
+                          1. Perform HostEnqueuePromiseJob(_fulfillJob_.[[Job]], _fulfillJob_.[[Realm]]).
+                        1. Else,
+                          1. Assert: The value of _promise_.[[PromiseState]] is ~rejected~.
+                          1. Let _reason_ be _promise_.[[PromiseResult]].
+                          1. If _promise_.[[PromiseIsHandled]] is *false*, perform HostPromiseRejectionTracker(_promise_, *"handle"*).
+                          1. Let _rejectJob_ be NewPromiseReactionJob(_rejectReaction_, _reason_).
+                          1. Perform HostEnqueuePromiseJob(_rejectJob_.[[Job]], _rejectJob_.[[Realm]]).
+                        1. Set _promise_.[[PromiseIsHandled]] to *true*.
+                        1. If _resultCapability_ is *undefined*, then
+                          1. Return *undefined*.
+                        1. Else,
+                          1. Return _resultCapability_.[[Promise]].
+                      </emu-alg>
+                    </emu-clause>
+                  </emu-clause>
+
+                  <emu-clause oldids="sec-promise.prototype-@@tostringtag" id="sec-promise.prototype-%symbol.tostringtag%">
+                    <h1>Promise.prototype [ %Symbol.toStringTag% ]</h1>
+                    <p>The initial value of the %Symbol.toStringTag% property is the String value *"Promise"*.</p>
+                    <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
+                  </emu-clause>
+                </emu-clause>
+
+<emu-clause id="sec-properties-of-promise-instances">
+
+### Properties of Promise Instances
+                  <p>Promise instances are ordinary objects that inherit properties from the Promise prototype object (the intrinsic, %Promise.prototype%). Promise instances are initially created with the internal slots described in <emu-xref href="#table-internal-slots-of-promise-instances"></emu-xref>.</p>
+                  <emu-table id="table-internal-slots-of-promise-instances" caption="Internal Slots of Promise Instances" oldids="table-59">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>
+                            Internal Slot
+                          </th>
+                          <th>
+                            Type
+                          </th>
+                          <th>
+                            Description
+                          </th>
+                        </tr>
+                      </thead>
+                      <tr>
+                        <td>
+                          [[PromiseState]]
+                        </td>
+                        <td>
+                          ~pending~, ~fulfilled~, or ~rejected~
+                        </td>
+                        <td>
+                          Governs how a promise will react to incoming calls to its `then` method.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          [[PromiseResult]]
+                        </td>
+                        <td>
+                          an ECMAScript language value
+                        </td>
+                        <td>
+                          The value with which the promise has been fulfilled or rejected, if any. Only meaningful if [[PromiseState]] is not ~pending~.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          [[PromiseFulfillReactions]]
+                        </td>
+                        <td>
+                          a List of PromiseReaction Records
+                        </td>
+                        <td>
+                          Records to be processed when/if the promise transitions from the ~pending~ state to the ~fulfilled~ state.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          [[PromiseRejectReactions]]
+                        </td>
+                        <td>
+                          a List of PromiseReaction Records
+                        </td>
+                        <td>
+                          Records to be processed when/if the promise transitions from the ~pending~ state to the ~rejected~ state.
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          [[PromiseIsHandled]]
+                        </td>
+                        <td>
+                          a Boolean
+                        </td>
+                        <td>
+                          Indicates whether the promise has ever had a fulfillment or rejection handler; used in unhandled rejection tracking.
+                        </td>
+                      </tr>
+                    </table>
+                  </emu-table>
                 </emu-clause>
               </emu-clause>
-
-              <emu-clause id="sec-promise.prototype">
-                <h1>Promise.prototype</h1>
-                <p>The initial value of `Promise.prototype` is the Promise prototype object.</p>
-                <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.</p>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.race">
-                <h1>Promise.race ( _iterable_ )</h1>
-                <p>This function returns a new promise which is settled in the same way as the first passed promise to settle. It resolves all elements of the passed _iterable_ to promises as it runs this algorithm.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
-                  1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
-                  1. Let _iteratorRecord_ be Completion(GetIterator(_iterable_, ~sync~)).
-                  1. IfAbruptRejectPromise(_iteratorRecord_, _promiseCapability_).
-                  1. Let _result_ be Completion(PerformPromiseRace(_iteratorRecord_, _C_, _promiseCapability_, _promiseResolve_)).
-                  1. If _result_ is an abrupt completion, then
-                    1. If _iteratorRecord_.[[Done]] is *false*, set _result_ to Completion(IteratorClose(_iteratorRecord_, _result_)).
-                    1. IfAbruptRejectPromise(_result_, _promiseCapability_).
-                  1. Return ? _result_.
-                </emu-alg>
-                <emu-note>
-                  <p>If the _iterable_ argument yields no values or if none of the promises yielded by _iterable_ ever settle, then the pending promise returned by this method will never be settled.</p>
-                </emu-note>
-                <emu-note>
-                  <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor. It also expects that its *this* value provides a `resolve` method.</p>
-                </emu-note>
-
-                <emu-clause id="sec-performpromiserace" type="abstract operation">
-                  <h1>
-                    PerformPromiseRace (
-                      _iteratorRecord_: an Iterator Record,
-                      _constructor_: a constructor,
-                      _resultCapability_: a PromiseCapability Record,
-                      _promiseResolve_: a function object,
-                    ): either a normal completion containing an ECMAScript language value or a throw completion
-                  </h1>
-                  <dl class="header">
-                  </dl>
-                  <emu-alg>
-                    1. Repeat,
-                      1. Let _next_ be ? IteratorStepValue(_iteratorRecord_).
-                      1. If _next_ is ~done~, then
-                        1. Return _resultCapability_.[[Promise]].
-                      1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _next_ »).
-                      1. Perform ? Invoke(_nextPromise_, *"then"*, « _resultCapability_.[[Resolve]], _resultCapability_.[[Reject]] »).
-                  </emu-alg>
-                </emu-clause>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.reject">
-                <h1>Promise.reject ( _r_ )</h1>
-                <p>This function returns a new promise rejected with the passed argument.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Perform ? Call(_promiseCapability_.[[Reject]], *undefined*, « _r_ »).
-                  1. Return _promiseCapability_.[[Promise]].
-                </emu-alg>
-                <emu-note>
-                  <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
-                </emu-note>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.resolve">
-                <h1>Promise.resolve ( _x_ )</h1>
-                <p>This function returns either a new promise resolved with the passed argument, or the argument itself if the argument is a promise produced by this constructor.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. If _C_ is not an Object, throw a *TypeError* exception.
-                  1. Return ? PromiseResolve(_C_, _x_).
-                </emu-alg>
-                <emu-note>
-                  <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
-                </emu-note>
-
-                <emu-clause id="sec-promise-resolve" type="abstract operation">
-                  <h1>
-                    PromiseResolve (
-                      _C_: an Object,
-                      _x_: an ECMAScript language value,
-                    ): either a normal completion containing an ECMAScript language value or a throw completion
-                  </h1>
-                  <dl class="header">
-                    <dt>description</dt>
-                    <dd>It returns a new promise resolved with _x_.</dd>
-                  </dl>
-                  <emu-alg>
-                    1. If IsPromise(_x_) is *true*, then
-                      1. Let _xConstructor_ be ? Get(_x_, *"constructor"*).
-                      1. If SameValue(_xConstructor_, _C_) is *true*, return _x_.
-                    1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                    1. Perform ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _x_ »).
-                    1. Return _promiseCapability_.[[Promise]].
-                  </emu-alg>
-                </emu-clause>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.try">
-                <h1>Promise.try ( _callback_, ..._args_ )</h1>
-                <p>This function performs the following steps when called:</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. If _C_ is not an Object, throw a *TypeError* exception.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Let _status_ be Completion(Call(_callback_, *undefined*, _args_)).
-                  1. If _status_ is an abrupt completion, then
-                    1. Perform ? Call(_promiseCapability_.[[Reject]], *undefined*, « _status_.[[Value]] »).
-                  1. Else,
-                    1. Perform ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _status_.[[Value]] »).
-                  1. Return _promiseCapability_.[[Promise]].
-                </emu-alg>
-                <emu-note>
-                  <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
-                </emu-note>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.withResolvers">
-                <h1>Promise.withResolvers ( )</h1>
-                <p>This function returns an object with three properties: a new promise together with the `resolve` and `reject` functions associated with it.</p>
-                <emu-alg>
-                  1. Let _C_ be the *this* value.
-                  1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-                  1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
-                  1. Perform ! CreateDataPropertyOrThrow(_obj_, *"promise"*, _promiseCapability_.[[Promise]]).
-                  1. Perform ! CreateDataPropertyOrThrow(_obj_, *"resolve"*, _promiseCapability_.[[Resolve]]).
-                  1. Perform ! CreateDataPropertyOrThrow(_obj_, *"reject"*, _promiseCapability_.[[Reject]]).
-                  1. Return _obj_.
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause oldids="sec-get-promise-@@species" id="sec-get-promise-%symbol.species%">
-                <h1>get Promise [ %Symbol.species% ]</h1>
-                <p>`Promise[%Symbol.species%]` is an accessor property whose set accessor function is *undefined*. Its get accessor function performs the following steps when called:</p>
-                <emu-alg>
-                  1. Return the *this* value.
-                </emu-alg>
-                <p>The value of the *"name"* property of this function is *"get [Symbol.species]"*.</p>
-                <emu-note>
-                  <p>Promise prototype methods normally use their *this* value's constructor to create a derived object. However, a subclass constructor may over-ride that default behaviour by redefining its %Symbol.species% property.</p>
-                </emu-note>
-              </emu-clause>
-            </emu-clause>
-
-            <emu-clause id="sec-properties-of-the-promise-prototype-object">
-              <h1>Properties of the Promise Prototype Object</h1>
-              <p>The <dfn>Promise prototype object</dfn>:</p>
-              <ul>
-                <li>is <dfn>%Promise.prototype%</dfn>.</li>
-                <li>has a [[Prototype]] internal slot whose value is %Object.prototype%.</li>
-                <li>is an ordinary object.</li>
-                <li>does not have a [[PromiseState]] internal slot or any of the other internal slots of Promise instances.</li>
-              </ul>
-
-              <emu-clause id="sec-promise.prototype.catch">
-                <h1>Promise.prototype.catch ( _onRejected_ )</h1>
-                <p>This method performs the following steps when called:</p>
-                <emu-alg>
-                  1. Let _promise_ be the *this* value.
-                  1. Return ? Invoke(_promise_, *"then"*, « *undefined*, _onRejected_ »).
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.prototype.constructor">
-                <h1>Promise.prototype.constructor</h1>
-                <p>The initial value of `Promise.prototype.constructor` is %Promise%.</p>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.prototype.finally" oldids="sec-thenfinallyfunctions,sec-catchfinallyfunctions">
-                <h1>Promise.prototype.finally ( _onFinally_ )</h1>
-                <p>This method performs the following steps when called:</p>
-                <emu-alg>
-                  1. Let _promise_ be the *this* value.
-                  1. If _promise_ is not an Object, throw a *TypeError* exception.
-                  1. Let _C_ be ? SpeciesConstructor(_promise_, %Promise%).
-                  1. Assert: IsConstructor(_C_) is *true*.
-                  1. If IsCallable(_onFinally_) is *false*, then
-                    1. Let _thenFinally_ be _onFinally_.
-                    1. Let _catchFinally_ be _onFinally_.
-                  1. Else,
-                    1. Let _thenFinallyClosure_ be a new Abstract Closure with parameters (_value_) that captures _onFinally_ and _C_ and performs the following steps when called:
-                      1. Let _result_ be ? Call(_onFinally_, *undefined*).
-                      1. Let _p_ be ? PromiseResolve(_C_, _result_).
-                      1. Let _returnValue_ be a new Abstract Closure with no parameters that captures _value_ and performs the following steps when called:
-                        1. Return _value_.
-                      1. Let _valueThunk_ be CreateBuiltinFunction(_returnValue_, 0, *""*, « »).
-                      1. Return ? Invoke(_p_, *"then"*, « _valueThunk_ »).
-                    1. Let _thenFinally_ be CreateBuiltinFunction(_thenFinallyClosure_, 1, *""*, « »).
-                    1. Let _catchFinallyClosure_ be a new Abstract Closure with parameters (_reason_) that captures _onFinally_ and _C_ and performs the following steps when called:
-                      1. Let _result_ be ? Call(_onFinally_, *undefined*).
-                      1. Let _p_ be ? PromiseResolve(_C_, _result_).
-                      1. Let _throwReason_ be a new Abstract Closure with no parameters that captures _reason_ and performs the following steps when called:
-                        1. Return ThrowCompletion(_reason_).
-                      1. Let _thrower_ be CreateBuiltinFunction(_throwReason_, 0, *""*, « »).
-                      1. Return ? Invoke(_p_, *"then"*, « _thrower_ »).
-                    1. Let _catchFinally_ be CreateBuiltinFunction(_catchFinallyClosure_, 1, *""*, « »).
-                  1. Return ? Invoke(_promise_, *"then"*, « _thenFinally_, _catchFinally_ »).
-                </emu-alg>
-              </emu-clause>
-
-              <emu-clause id="sec-promise.prototype.then">
-                <h1>Promise.prototype.then ( _onFulfilled_, _onRejected_ )</h1>
-                <p>This method performs the following steps when called:</p>
-                <emu-alg>
-                  1. Let _promise_ be the *this* value.
-                  1. If IsPromise(_promise_) is *false*, throw a *TypeError* exception.
-                  1. Let _C_ be ? SpeciesConstructor(_promise_, %Promise%).
-                  1. Let _resultCapability_ be ? NewPromiseCapability(_C_).
-                  1. Return PerformPromiseThen(_promise_, _onFulfilled_, _onRejected_, _resultCapability_).
-                </emu-alg>
-
-                <emu-clause id="sec-performpromisethen" type="abstract operation">
-                  <h1>
-                    PerformPromiseThen (
-                      _promise_: a Promise,
-                      _onFulfilled_: an ECMAScript language value,
-                      _onRejected_: an ECMAScript language value,
-                      optional _resultCapability_: a PromiseCapability Record,
-                    ): an ECMAScript language value
-                  </h1>
-                  <dl class="header">
-                    <dt>description</dt>
-                    <dd>It performs the “then” operation on _promise_ using _onFulfilled_ and _onRejected_ as its settlement actions. If _resultCapability_ is passed, the result is stored by updating _resultCapability_'s promise. If it is not passed, then PerformPromiseThen is being called by a specification-internal operation where the result does not matter.</dd>
-                  </dl>
-                  <emu-alg>
-                    1. Assert: IsPromise(_promise_) is *true*.
-                    1. If _resultCapability_ is not present, then
-                      1. Set _resultCapability_ to *undefined*.
-                    1. If IsCallable(_onFulfilled_) is *false*, then
-                      1. Let _onFulfilledJobCallback_ be ~empty~.
-                    1. Else,
-                      1. Let _onFulfilledJobCallback_ be HostMakeJobCallback(_onFulfilled_).
-                    1. If IsCallable(_onRejected_) is *false*, then
-                      1. Let _onRejectedJobCallback_ be ~empty~.
-                    1. Else,
-                      1. Let _onRejectedJobCallback_ be HostMakeJobCallback(_onRejected_).
-                    1. Let _fulfillReaction_ be the PromiseReaction Record { [[Capability]]: _resultCapability_, [[Type]]: ~fulfill~, [[Handler]]: _onFulfilledJobCallback_ }.
-                    1. Let _rejectReaction_ be the PromiseReaction Record { [[Capability]]: _resultCapability_, [[Type]]: ~reject~, [[Handler]]: _onRejectedJobCallback_ }.
-                    1. If _promise_.[[PromiseState]] is ~pending~, then
-                      1. Append _fulfillReaction_ to _promise_.[[PromiseFulfillReactions]].
-                      1. Append _rejectReaction_ to _promise_.[[PromiseRejectReactions]].
-                    1. Else if _promise_.[[PromiseState]] is ~fulfilled~, then
-                      1. Let _value_ be _promise_.[[PromiseResult]].
-                      1. Let _fulfillJob_ be NewPromiseReactionJob(_fulfillReaction_, _value_).
-                      1. Perform HostEnqueuePromiseJob(_fulfillJob_.[[Job]], _fulfillJob_.[[Realm]]).
-                    1. Else,
-                      1. Assert: The value of _promise_.[[PromiseState]] is ~rejected~.
-                      1. Let _reason_ be _promise_.[[PromiseResult]].
-                      1. If _promise_.[[PromiseIsHandled]] is *false*, perform HostPromiseRejectionTracker(_promise_, *"handle"*).
-                      1. Let _rejectJob_ be NewPromiseReactionJob(_rejectReaction_, _reason_).
-                      1. Perform HostEnqueuePromiseJob(_rejectJob_.[[Job]], _rejectJob_.[[Realm]]).
-                    1. Set _promise_.[[PromiseIsHandled]] to *true*.
-                    1. If _resultCapability_ is *undefined*, then
-                      1. Return *undefined*.
-                    1. Else,
-                      1. Return _resultCapability_.[[Promise]].
-                  </emu-alg>
-                </emu-clause>
-              </emu-clause>
-
-              <emu-clause oldids="sec-promise.prototype-@@tostringtag" id="sec-promise.prototype-%symbol.tostringtag%">
-                <h1>Promise.prototype [ %Symbol.toStringTag% ]</h1>
-                <p>The initial value of the %Symbol.toStringTag% property is the String value *"Promise"*.</p>
-                <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *true* }.</p>
-              </emu-clause>
-            </emu-clause>
-
-            <emu-clause id="sec-properties-of-promise-instances">
-              <h1>Properties of Promise Instances</h1>
-              <p>Promise instances are ordinary objects that inherit properties from the Promise prototype object (the intrinsic, %Promise.prototype%). Promise instances are initially created with the internal slots described in <emu-xref href="#table-internal-slots-of-promise-instances"></emu-xref>.</p>
-              <emu-table id="table-internal-slots-of-promise-instances" caption="Internal Slots of Promise Instances" oldids="table-59">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>
-                        Internal Slot
-                      </th>
-                      <th>
-                        Type
-                      </th>
-                      <th>
-                        Description
-                      </th>
-                    </tr>
-                  </thead>
-                  <tr>
-                    <td>
-                      [[PromiseState]]
-                    </td>
-                    <td>
-                      ~pending~, ~fulfilled~, or ~rejected~
-                    </td>
-                    <td>
-                      Governs how a promise will react to incoming calls to its `then` method.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      [[PromiseResult]]
-                    </td>
-                    <td>
-                      an ECMAScript language value
-                    </td>
-                    <td>
-                      The value with which the promise has been fulfilled or rejected, if any. Only meaningful if [[PromiseState]] is not ~pending~.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      [[PromiseFulfillReactions]]
-                    </td>
-                    <td>
-                      a List of PromiseReaction Records
-                    </td>
-                    <td>
-                      Records to be processed when/if the promise transitions from the ~pending~ state to the ~fulfilled~ state.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      [[PromiseRejectReactions]]
-                    </td>
-                    <td>
-                      a List of PromiseReaction Records
-                    </td>
-                    <td>
-                      Records to be processed when/if the promise transitions from the ~pending~ state to the ~rejected~ state.
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      [[PromiseIsHandled]]
-                    </td>
-                    <td>
-                      a Boolean
-                    </td>
-                    <td>
-                      Indicates whether the promise has ever had a fulfillment or rejection handler; used in unhandled rejection tracking.
-                    </td>
-                  </tr>
-                </table>
-              </emu-table>
-            </emu-clause>
-          </emu-clause>
 
 <emu-clause id="sec-generatorfunction-objects">
 
