@@ -1398,8 +1398,9 @@
                     <li>has the following properties:</li>
                   </ul>
 
-                  <emu-clause id="sec-promise.all">
-                    <h1>Promise.all ( _iterable_ )</h1>
+<emu-clause id="sec-promise.all">
+
+#### Promise.all ( _iterable_ )
                     <p>This function returns a new promise which is fulfilled with an array of fulfillment values for the passed promises, or rejects with the reason of the first passed promise that rejects. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1495,8 +1496,9 @@
                     </emu-clause>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.allsettled">
-                    <h1>Promise.allSettled ( _iterable_ )</h1>
+<emu-clause id="sec-promise.allsettled">
+
+#### Promise.allSettled ( _iterable_ )
                     <p>This function returns a promise that is fulfilled with an array of promise state snapshots, but only after all the original promises have settled, i.e. become either fulfilled or rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1616,8 +1618,9 @@
                     </emu-clause>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.any">
-                    <h1>Promise.any ( _iterable_ )</h1>
+<emu-clause id="sec-promise.any">
+
+#### Promise.any ( _iterable_ )
                     <p>This function returns a promise that is fulfilled by the first given promise to be fulfilled, or rejected with an `AggregateError` holding the rejection reasons if all of the given promises are rejected. It resolves all elements of the passed iterable to promises as it runs this algorithm.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1700,14 +1703,16 @@
                     </emu-clause>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.prototype">
-                    <h1>Promise.prototype</h1>
+<emu-clause id="sec-promise.prototype">
+
+#### Promise.prototype
                     <p>The initial value of `Promise.prototype` is the Promise prototype object.</p>
                     <p>This property has the attributes { [[Writable]]: *false*, [[Enumerable]]: *false*, [[Configurable]]: *false* }.</p>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.race">
-                    <h1>Promise.race ( _iterable_ )</h1>
+<emu-clause id="sec-promise.race">
+
+#### Promise.race ( _iterable_ )
                     <p>This function returns a new promise which is settled in the same way as the first passed promise to settle. It resolves all elements of the passed _iterable_ to promises as it runs this algorithm.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1751,8 +1756,9 @@
                     </emu-clause>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.reject">
-                    <h1>Promise.reject ( _r_ )</h1>
+<emu-clause id="sec-promise.reject">
+
+#### Promise.reject ( _r_ )
                     <p>This function returns a new promise rejected with the passed argument.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1765,8 +1771,9 @@
                     </emu-note>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.resolve">
-                    <h1>Promise.resolve ( _x_ )</h1>
+<emu-clause id="sec-promise.resolve">
+
+#### Promise.resolve ( _x_ )
                     <p>This function returns either a new promise resolved with the passed argument, or the argument itself if the argument is a promise produced by this constructor.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1799,8 +1806,9 @@
                     </emu-clause>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.try">
-                    <h1>Promise.try ( _callback_, ..._args_ )</h1>
+<emu-clause id="sec-promise.try">
+
+#### Promise.try ( _callback_, ..._args_ )
                     <p>This function performs the following steps when called:</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1818,8 +1826,9 @@
                     </emu-note>
                   </emu-clause>
 
-                  <emu-clause id="sec-promise.withResolvers">
-                    <h1>Promise.withResolvers ( )</h1>
+<emu-clause id="sec-promise.withResolvers">
+
+#### Promise.withResolvers ( )
                     <p>This function returns an object with three properties: a new promise together with the `resolve` and `reject` functions associated with it.</p>
                     <emu-alg>
                       1. Let _C_ be the *this* value.
@@ -1832,8 +1841,9 @@
                     </emu-alg>
                   </emu-clause>
 
-                  <emu-clause oldids="sec-get-promise-@@species" id="sec-get-promise-%symbol.species%">
-                    <h1>get Promise [ %Symbol.species% ]</h1>
+<emu-clause oldids="sec-get-promise-@@species" id="sec-get-promise-%symbol.species%">
+
+#### get Promise [ %Symbol.species% ]
                     <p>`Promise[%Symbol.species%]` is an accessor property whose set accessor function is *undefined*. Its get accessor function performs the following steps when called:</p>
                     <emu-alg>
                       1. Return the *this* value.
