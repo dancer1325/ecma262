@@ -1,13 +1,13 @@
-
 ECMAScript
 ====
 
 ## This repo
 
-* source for the current draft of ECMA-262, ECMAScript® Language Specification.
+* == current draft of ECMA-262, ECMAScript® Language Specification.
 
 * [website](https://tc39.es/ecma262/)
 * [specification history](https://searchfox.org/ecma262/source/spec.html)
+* [specification](spec.md)
 
 ## Current Proposals
 
