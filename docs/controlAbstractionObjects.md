@@ -1774,12 +1774,16 @@
 <emu-clause id="sec-promise.resolve">
 
 #### Promise.resolve ( _x_ )
-                    <p>This function returns either a new promise resolved with the passed argument, or the argument itself if the argument is a promise produced by this constructor.</p>
-                    <emu-alg>
-                      1. Let _C_ be the *this* value.
-                      1. If _C_ is not an Object, throw a *TypeError* exception.
-                      1. Return ? PromiseResolve(_C_, _x_).
-                    </emu-alg>
+* == function /
+  * returns
+    * NEW promise resolved / 's value == passed argument, or
+    * if the argument == promise / produced by this constructor -> returns the argument itself
+
+* TODO:
+* _C_ be the *this* value.
+* If _C_ is not an Object, throw a *TypeError* exception.
+* Return ? PromiseResolve(_C_, _x_).
+
                     <emu-note>
                       <p>This function expects its *this* value to be a constructor function that supports the parameter conventions of the Promise constructor.</p>
                     </emu-note>
